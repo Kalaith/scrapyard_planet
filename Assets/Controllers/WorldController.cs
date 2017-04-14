@@ -23,6 +23,7 @@ public class WorldController : MonoBehaviour {
                 tile_go.AddComponent<SpriteRenderer>();
                 tile_data.RegisterTileTypeChangedCallback((tile) => { OnTileTypeChanged(tile, tile_go); });
                 tile_go.GetComponent<SpriteRenderer>().sprite = floorSprite;
+                tile_go.GetComponent<SpriteRenderer>().sortingOrder = 0;
 
             }
         }

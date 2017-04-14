@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour {
 
         player_go.AddComponent<SpriteRenderer>();
         player_go.GetComponent<SpriteRenderer>().sprite = playerSprite;
+        player_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
 
 
