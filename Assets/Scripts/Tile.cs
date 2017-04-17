@@ -12,6 +12,7 @@ public class Tile {
     Map map;
     int x;
     int y;
+    int movementCost; // cost to move through the tile
 
     Action<Tile> cbTileTypeChanged;
 
@@ -25,6 +26,12 @@ public class Tile {
             if (cbTileTypeChanged != null)
                 cbTileTypeChanged(this);
             
+        }
+    }
+
+    public int Cost {
+        get {
+            return movementCost;
         }
     }
 
@@ -48,9 +55,10 @@ public class Tile {
         cbTileTypeChanged -= callback;
     }
 
-    public Tile(Map map, int x, int y) {
+    public Tile(Map map, int x, int y, int cost) {
         this.map = map;
         this.x = x;
         this.y = y;
+        this.movementCost = cost;
     }
 }

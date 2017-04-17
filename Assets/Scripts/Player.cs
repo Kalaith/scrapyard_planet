@@ -15,7 +15,7 @@ public class Player {
         this.name = name;
         this.x = x;
         this.y = y;
-        this.Speed = speed;
+        this.speed = speed;
     }
 
     public Vector3 getPosition() {

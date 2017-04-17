@@ -5,6 +5,7 @@ using UnityEngine;
 public class WorldController : MonoBehaviour {
 
     public Sprite floorSprite;
+    public Sprite wallSprite;
 
     Map map;
 
@@ -22,7 +23,11 @@ public class WorldController : MonoBehaviour {
                 tile_go.transform.SetParent(this.transform, true);
                 tile_go.AddComponent<SpriteRenderer>();
                 tile_data.RegisterTileTypeChangedCallback((tile) => { OnTileTypeChanged(tile, tile_go); });
-                tile_go.GetComponent<SpriteRenderer>().sprite = floorSprite;
+                if (tile_data.Type == Tile.TileType.Floor) {
+                    tile_go.GetComponent<SpriteRenderer>().sprite = floorSprite;
+                } else if(tile_data.Type == Tile.TileType.Wall) {
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                }
                 tile_go.GetComponent<SpriteRenderer>().sortingOrder = 0;
 
             }
