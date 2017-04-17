@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldController : MonoBehaviour {
+public class MapController : MonoBehaviour {
 
+    public static MapController Instance { get; protected set; }
     public Sprite floorSprite;
     public Sprite wallSprite;
 
-    Map map;
+    public Map Map { get; protected set; }
 
 	// Use this for initialization
 	void Start () {
-        map = new Map();
+        Instance = this;
+        Map = new Map();
 
-        for (int x = 0; x < map.Width; x++) {
-            for (int y = 0; y < map.Height; y++) {
-                Tile tile_data = map.GetTileAt(x, y);
+        for (int x = 0; x < Map.Width; x++) {
+            for (int y = 0; y < Map.Height; y++) {
+                Tile tile_data = Map.GetTileAt(x, y);
                 GameObject tile_go = new GameObject();
 
                 tile_go.name = "Tile_" + x + "_" + y;
