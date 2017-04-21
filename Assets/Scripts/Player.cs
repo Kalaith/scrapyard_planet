@@ -19,7 +19,7 @@ public class Player {
     }
 
     public Vector3 getPosition() {
-        return new Vector3(x, y, 0);
+        return new Vector3(x, y);
     }
 
     public void setPosition(Vector3 newPosition) {

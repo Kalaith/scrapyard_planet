@@ -4,28 +4,22 @@ using UnityEngine;
 
 public class MouseController : MonoBehaviour {
 
-    Vector3 lastFramePosition;
-    Vector3 currentFramePosition;
-
 	// Use this for initialization
 	void Start () {
-		
+
 	}
 
     // Update is called once per frame
     void Update() {
-        currentFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        mouseDrag();
+        movePlayer();
 
-        lastFramePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        
     }
 
-    void mouseDrag() {
-        if (Input.GetMouseButton(2)) {
-            Vector3 diff = lastFramePosition - currentFramePosition;
-            Camera.main.transform.Translate(diff);
+    void movePlayer() {
+        if (Input.GetMouseButton(0)) {
+            PlayerController p = (PlayerController)FindObjectOfType(typeof(PlayerController));
+            p.PlayerDestination = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
     }
 }
