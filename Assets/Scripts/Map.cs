@@ -7,6 +7,18 @@ public class Map {
     Tile[,] tiles;
     int width;
     int height;
+    private Path_TileGraph tileGraph;
+
+    public Path_TileGraph TileGraph {
+        get {
+            return tileGraph;
+        }
+
+        set {
+            tileGraph = value;
+        }
+    }
+
 
     public int Width {
         get {
@@ -28,7 +40,7 @@ public class Map {
         tiles = new Tile[width, height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                if(x==0 || x == width-1 || y == 0 || y == height-1) {
+                if(x==0 || x == width-1 || y == 0 || y == height-1 || (y == 5 && x < 4 )) {
                     cost = 0;
                     tileType = Tile.TileType.Wall;
                 } else {
@@ -39,6 +51,8 @@ public class Map {
                 tiles[x, y].Type = tileType;
             }
         }
+
+        TileGraph = new Path_TileGraph(this);
 
         Debug.Log("World created with " + (width * height) + " tiles");
 
