@@ -59,8 +59,8 @@ public class Map {
     }
 
     public Tile GetTileAt(int x, int y) {
-        if(x > width || x < 0 || y > height || y < 0) {
-            Debug.LogError("Tile ("+x+","+y+"), is out of range");
+        if(x >= width || x < 0 || y >= height || y < 0) {
+            //Debug.LogError("Tile ("+x+","+y+"), is out of range");
             return null;
         }
 

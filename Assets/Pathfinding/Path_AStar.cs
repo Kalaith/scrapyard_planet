@@ -123,7 +123,14 @@ public class Path_AStar {
 
     }
 
-    Tile GetNextTile() {
+    public Tile Dequeue() {
         return path.Dequeue();
+    }
+
+    public int Length() {
+        if (path == null) {
+            return 0;
+        }
+        return path.Count;
     }
 }

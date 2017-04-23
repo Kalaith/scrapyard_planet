@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class MouseController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    MapController mc;
 
-	}
+
+    // Use this for initialization
+    void Start () {
+        mc = (MapController)FindObjectOfType(typeof(MapController));
+    }
 
     // Update is called once per frame
     void Update() {
@@ -19,7 +22,12 @@ public class MouseController : MonoBehaviour {
     void movePlayer() {
         if (Input.GetMouseButton(0)) {
             PlayerController p = (PlayerController)FindObjectOfType(typeof(PlayerController));
-            p.PlayerDestination = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 moveTo = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            Debug.Log("Attempts to move to "+ Mathf.FloorToInt(moveTo.x) +":"+ Mathf.FloorToInt(moveTo.y));
+            if (mc.Map.GetTileAt(Mathf.FloorToInt(moveTo.x), Mathf.FloorToInt(moveTo.y)) != null) {
+                p.Player.DestTile = mc.Map.GetTileAt(Mathf.FloorToInt(moveTo.x), Mathf.FloorToInt(moveTo.y));
+            }
         }
     }
 }
