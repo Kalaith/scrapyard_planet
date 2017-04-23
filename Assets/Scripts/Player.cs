@@ -44,11 +44,14 @@ public class Player {
             return;
         }
 
+        // is nextTile null or the current tile
         if(nextTile == null || nextTile == currTile) {
-            // Ask the pathfinding for the next tile
+            // Has pathAStar found a valid path
             if (pathAStar == null || pathAStar.Length() == 0) {
+                // Generate a new path, needs the map, the current tile and the destination tile.
                 pathAStar = new Path_AStar(map, currTile, destTile);
 
+                // pathAStar could not find a valid path.
                 if(pathAStar.Length() == 0) {
                     Debug.LogError("Path_AStar returned no path to destination");
                     pathAStar = null;
@@ -56,8 +59,10 @@ public class Player {
                 }
             }
 
+            // we have a path, set nextTile to the next tile along the path.
             nextTile = pathAStar.Dequeue();
             
+            // is nextTile the same as currTile? it will be at the very start.
             if(nextTile == currTile) {
                 Debug.LogError("nextTime is currTile?");
             }
