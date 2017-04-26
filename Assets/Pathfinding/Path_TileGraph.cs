@@ -39,8 +39,12 @@ public class Path_TileGraph {
 
             for (int i = 0; i < neighbours.Length; i++) {
                 if (neighbours[i] != null && neighbours[i].Cost > 0) {
-                    Path_Edge<Tile> e = new Path_Edge<Tile>();
 
+                    if(IsClippingCorner(t, neighbours[i])) {
+                        continue;
+                    }
+                    Path_Edge<Tile> e = new Path_Edge<Tile>();
+           
                     e.cost = neighbours[i].Cost;
                     e.node = nodes[neighbours[i]];
 
@@ -52,5 +56,23 @@ public class Path_TileGraph {
         }
 
         Debug.Log("Pat_Tilegraph: Created " + nodes.Count + " nodes.");
+    }
+
+    bool IsClippingCorner(Tile curr, Tile neigh) {
+        int dX = curr.X - neigh.X;
+        int dY = curr.Y - neigh.Y;
+
+        if(Mathf.Abs(dX) + Mathf.Abs(dY) == 2) {
+
+            if(curr.Map.GetTileAt(curr.X - dX, curr.Y).Cost == 0) {
+                return true;
+            }
+            if (curr.Map.GetTileAt(curr.X, curr.Y - dY).Cost == 0) {
+                return true;
+            }
+        }
+
+        return false;
+
     }
 }

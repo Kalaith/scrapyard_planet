@@ -41,6 +41,7 @@ public class Player {
     public void Update_HandleMovement(float deltaTime) {
 
         if (currTile == DestTile) {
+            pathAStar = null;
             return;
         }
 

@@ -12,16 +12,20 @@ public class Path_AStar {
 
         Dictionary<Tile, Path_Node<Tile>> nodes = map.TileGraph.Nodes;
 
-        Path_Node<Tile> start = nodes[tileStart];
-        Path_Node<Tile> goal = nodes[tileEnd];
-
-
+        // Check the tile they start on and end on is valid and in the pathfinding graph.
+        // FUTURE FEATURE: move as close as possible.
         if (nodes.ContainsKey(tileStart) == false) {
             Debug.LogError("Starting tile is not in list of nodes.");
+            return;
         }
+
         if (nodes.ContainsKey(tileEnd) == false) {
             Debug.LogError("Ending tile is not in list of nodes.");
+            return;
         }
+
+        Path_Node<Tile> start = nodes[tileStart];
+        Path_Node<Tile> goal = nodes[tileEnd];
 
         List<Path_Node<Tile>> ClosedSet = new List<Path_Node<Tile>>();
 

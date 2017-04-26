@@ -46,7 +46,17 @@ public class Tile {
             return y;
         }
     }
-    
+
+    public Map Map {
+        get {
+            return map;
+        }
+
+        set {
+            map = value;
+        }
+    }
+
     public void RegisterTileTypeChangedCallback(Action<Tile> callback) {
         cbTileTypeChanged += callback;
     }
@@ -56,7 +66,7 @@ public class Tile {
     }
 
     public Tile(Map map, int x, int y, int cost) {
-        this.map = map;
+        this.Map = map;
         this.x = x;
         this.y = y;
         this.movementCost = cost;
@@ -78,23 +88,23 @@ public class Tile {
         }
 
         Tile n;
-        n = map.GetTileAt(x, y + 1);
+        n = Map.GetTileAt(x, y + 1);
         ns[0] = n;
-        n = map.GetTileAt(x + 1, y);
+        n = Map.GetTileAt(x + 1, y);
         ns[1] = n;
-        n = map.GetTileAt(x, y - 1);
+        n = Map.GetTileAt(x, y - 1);
         ns[2] = n;
-        n = map.GetTileAt(x - 1, y);
+        n = Map.GetTileAt(x - 1, y);
         ns[3] = n;
 
         if (diagOkay == true) {
-            n = map.GetTileAt(x + 1, y + 1);
+            n = Map.GetTileAt(x + 1, y + 1);
             ns[4] = n;
-            n = map.GetTileAt(x + 1, y - 1);
+            n = Map.GetTileAt(x + 1, y - 1);
             ns[5] = n;
-            n = map.GetTileAt(x - 1, y - 1);
+            n = Map.GetTileAt(x - 1, y - 1);
             ns[6] = n;
-            n = map.GetTileAt(x - 1, y + 1);
+            n = Map.GetTileAt(x - 1, y + 1);
             ns[7] = n;
         }
 
