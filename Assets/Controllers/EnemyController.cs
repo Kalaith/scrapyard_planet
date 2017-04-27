@@ -4,17 +4,29 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-        List<GameObject> Enemies = new List<GameObject>();
-        Enemy example = new Enemy(1, 2,( 3, 2 );
-        Enemies.Add(example);
-        // This is all wrong. Will fix next time i work on this part.
-	}
+    List<GameObject> Enemies = new List<GameObject>();
+    public float EnemySpeed;
+    public GameObject Enemy1;
+    public Transform EnemyParent;
+
+
+    // Use this for initialization
+    void Start () {
+        for (int x = 0; x < 5; x++)
+        {
+            Vector3 position = new Vector3(Random.Range(-5.0f, 5.0f), Random.Range(-5.0f, 5.0f), 0);
+            GameObject pre = Instantiate(Enemy1, position, Quaternion.identity);
+            Enemies.Add(pre);
+            pre.transform.parent = EnemyParent;
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
-
+        foreach (GameObject x in Enemies)
+        {
+            x.GetComponent<Enemy>().MoveEnemies(EnemySpeed);
+        }
 		
 	}
 }

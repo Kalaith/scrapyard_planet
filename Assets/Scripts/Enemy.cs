@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,34 +6,18 @@ public class Enemy : MonoBehaviour {
 
     private int _Type;
     private int _Health;
-    private Vector2 _SpawnPos;
-    private float _SlopeToShip;
-    public int Speed;
+    public float _SpeedVariation;
 
     public Enemy(int t, int h, Vector2 s)
     {
         _Type = t;
         _Health = h;
-        _SpawnPos = s;
-
-        GameObject x = new GameObject("Enemy");
-
-    }
-
-    public float CalculateSlope()
-    {
-        return _SpawnPos[1] / _SpawnPos[0];
-    }
-		
-    void Update ()
-    {
-        if (this.transform.localPosition.x > 0)
-        {
-            this.transform.Translate(-(Speed), _SlopeToShip, 0);
-        } else
-        {
-            this.transform.Translate(Speed, _SlopeToShip, 0);
-        }
+        _SpeedVariation = Random.Range(0.75f, 1.5f);
     }
 	
+    public void MoveEnemies(float Speed)
+    {
+        this.transform.position = Vector3.MoveTowards(this.transform.position, GameObject.Find("OverviewShip").transform.position, (Speed * _SpeedVariation) * Time.deltaTime);
+    }
+
 }
