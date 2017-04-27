@@ -21,7 +21,7 @@ public class MapController : MonoBehaviour {
                 GameObject tile_go = new GameObject();
 
                 tile_go.name = "Tile_" + x + "_" + y;
-                tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 0);
+                tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 1);
                 tile_go.transform.SetParent(this.transform, true);
                 tile_go.AddComponent<SpriteRenderer>();
                 tile_data.RegisterTileTypeChangedCallback((tile) => { OnTileTypeChanged(tile, tile_go); });
