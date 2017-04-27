@@ -10,8 +10,9 @@ public class MapController : MonoBehaviour {
 
     public Map Map { get; protected set; }
 
-	// Use this for initialization
-	void Start () {
+
+    // Use this for initialization
+    void Start () {
         Instance = this;
         Map = new Map();
 
@@ -34,6 +35,7 @@ public class MapController : MonoBehaviour {
 
             }
         }
+
     }
 	
 	// Update is called once per frame
