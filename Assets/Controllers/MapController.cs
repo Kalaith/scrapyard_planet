@@ -7,6 +7,7 @@ public class MapController : MonoBehaviour {
     public static MapController Instance { get; protected set; }
     public Sprite floorSprite;
     public Sprite wallSprite;
+    public Sprite itemSwitchSprite;
 
     public Map Map { get; protected set; }
 
@@ -18,6 +19,7 @@ public class MapController : MonoBehaviour {
 
         for (int x = 0; x < Map.Width; x++) {
             for (int y = 0; y < Map.Height; y++) {
+                Debug.Log("X:"+x+"Y:"+y);
                 Tile tile_data = Map.GetTileAt(x, y);
                 GameObject tile_go = new GameObject();
 
@@ -32,6 +34,17 @@ public class MapController : MonoBehaviour {
                     tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
                 }
                 tile_go.GetComponent<SpriteRenderer>().sortingOrder = 0;
+
+                if(tile_data.Item != null) {
+                    Debug.Log("We have an item to spawn a game object on this tile at X:"+x+"Y:"+y);
+                    GameObject item_go = new GameObject();
+                    item_go.name = "Item_" + x + "_" + y;
+                    item_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 0);
+                    item_go.transform.SetParent(this.transform, true);
+                    item_go.AddComponent<SpriteRenderer>();
+                    item_go.GetComponent<SpriteRenderer>().sprite = itemSwitchSprite;
+                    item_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                }
 
             }
         }
