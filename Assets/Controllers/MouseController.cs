@@ -25,6 +25,7 @@ public class MouseController : MonoBehaviour {
 
             Debug.Log("Player attempts to move to "+ Mathf.FloorToInt(moveTo.x) +":"+ Mathf.FloorToInt(moveTo.y));
             if (mc.Map.GetTileAt(Mathf.FloorToInt(moveTo.x), Mathf.FloorToInt(moveTo.y)) != null) {
+
                 p.Player.DestTile = mc.Map.GetTileAt(Mathf.FloorToInt(moveTo.x), Mathf.FloorToInt(moveTo.y));
             }
         }
