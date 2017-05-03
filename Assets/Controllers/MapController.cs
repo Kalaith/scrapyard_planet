@@ -11,11 +11,13 @@ public class MapController : MonoBehaviour {
 
     public Map Map { get; protected set; }
 
+    InteractiveController itemController;
 
     // Use this for initialization
     void Start () {
         Instance = this;
         Map = new Map();
+        itemController = (InteractiveController)FindObjectOfType(typeof(InteractiveController));
 
         for (int x = 0; x < Map.Width; x++) {
             for (int y = 0; y < Map.Height; y++) {
@@ -37,13 +39,7 @@ public class MapController : MonoBehaviour {
 
                 if(tile_data.Item != null) {
                     Debug.Log("We have an item to spawn a game object on this tile at X:"+x+"Y:"+y);
-                    GameObject item_go = new GameObject();
-                    item_go.name = "Item_" + x + "_" + y;
-                    item_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 0);
-                    item_go.transform.SetParent(this.transform, true);
-                    item_go.AddComponent<SpriteRenderer>();
-                    item_go.GetComponent<SpriteRenderer>().sprite = itemSwitchSprite;
-                    item_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                    itemController.addItem(tile_data);
                 }
 
             }
