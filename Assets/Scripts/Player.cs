@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+//using System;
 
 public class Player {
 
@@ -54,7 +54,7 @@ public class Player {
 
                 // pathAStar could not find a valid path.
                 if(pathAStar.Length() == 0) {
-                    Debug.LogError("Path_AStar returned no path to destination");
+                    Debug.Log("Path_AStar returned no path to destination");
                     pathAStar = null;
                     return;
                 }
@@ -62,11 +62,7 @@ public class Player {
 
             // we have a path, set nextTile to the next tile along the path.
             nextTile = pathAStar.Dequeue();
-            
-            // is nextTile the same as currTile? it will be at the very start.
-            if(nextTile == currTile) {
-                Debug.LogError("nextTime is currTile?");
-            }
+
         }
 
         float distToTravel = Mathf.Sqrt(
@@ -99,6 +95,7 @@ public class Player {
         }
 
         set {
+            pathAStar = null;
             destTile = value;
         }
     }

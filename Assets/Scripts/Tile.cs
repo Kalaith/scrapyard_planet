@@ -15,6 +15,7 @@ public class Tile {
     int movementCost; // cost to move through the tile
 
     Action<Tile> cbTileTypeChanged;
+    InteractiveItem item;
 
     public TileType Type {
         get {
@@ -54,6 +55,16 @@ public class Tile {
 
         set {
             map = value;
+        }
+    }
+
+    public InteractiveItem Item {
+        get {
+            return item;
+        }
+
+        set {
+            item = value;
         }
     }
 
