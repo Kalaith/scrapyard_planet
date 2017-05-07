@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour {
 
-    List<GameObject> Enemies = new List<GameObject>();
+    public List<GameObject> Enemies = new List<GameObject>();
     public float EnemySpeed;
     public GameObject Enemy1;
     public Transform EnemyParent;
@@ -20,6 +20,27 @@ public class EnemyController : MonoBehaviour {
             pre.name = "Enemy " + x;
             Enemies.Add(pre);
             pre.transform.parent = EnemyParent;
+
+            if (GameObject.Find("OverviewShip").transform.position.y > pre.transform.position.y)
+            {
+                if (GameObject.Find("OverviewShip").transform.position.x > pre.transform.position.x)
+                {
+                    //add to turret firing list (bottom left)
+                } else
+                {
+                    //add to turret firing list (bottom right)
+                }
+            } else
+            {
+                if (GameObject.Find("OverviewShip").transform.position.x > pre.transform.position.x)
+                {
+                    //add to turret firing list (top Left)
+                }
+                else
+                {
+                    //add to turret firing list (top right)
+                }
+            }
         }
     }
 	
@@ -28,6 +49,7 @@ public class EnemyController : MonoBehaviour {
         foreach (GameObject x in Enemies)
         {
             x.GetComponent<Enemy>().MoveEnemies(EnemySpeed);
+
         }
 		
 	}
