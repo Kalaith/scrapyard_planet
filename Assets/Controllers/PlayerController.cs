@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour {
         player.Update_HandleMovement(Time.deltaTime);
         player_go.transform.position = new Vector3(Player.X, Player.Y, 0);
         Camera.main.transform.position = new Vector3(Player.X, Player.Y, Camera.main.transform.position.z);
-
     }
 }
 
