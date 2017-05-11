@@ -13,9 +13,18 @@ public class InteractiveItem {
     // If its damaged, the player needs to repair it before it becomes functional
     float repairProgress = 0;
 
-    // How much power does this item use when turned on
-    float powerUsage = 0;
+    // How many materials does it take it repair, currently using this for how much its prepared, but they that be a diffrent % later
+    // such as a turrent might cost 100 materials overall, 10 repairs, 10 materials each, 10% repair, 
+    // but the ship engines might be 500 materials, so at 10 at a time that is 50 repairs, only 2% each repair.
+    int repairCost;
 
+    // Instead of when an item is repaired it uses power, I am thinking instead that the repairprogress is how much of the power your using.
+    // a domaint statregie if this was not implemented is to repair everything to 90/99% and only at the end do the final %, but if this change is done.
+    // then 90% of everything repaired means the number of enemies attacking you is 90% and nothing finished to defend yourself.
+
+    // How much power does this item use when turned on
+    double operational_power_usage;
+    double reserved_power_usage; 
     // Currently we do not have modules, but later prehaps mod should be assigned, so it can be managed via the interactive option for turning on/off
     // Module mod;
 
@@ -42,9 +51,18 @@ public class InteractiveItem {
         }
     }
 
+    public int RepairCost {
+        get { return repairCost; }
+    }
+
     // Currently we dont need to init any variables since its assumed every part of the ship is not working
     public InteractiveItem(Tile tile) {
         this.tile = tile;
+        repairCost = 10;
+
+        // Assign these from the constructor
+        operational_power_usage = 50;
+        reserved_power_usage = 10;
     }
 
     // Might do something diffrent from deltaTime, see how it goes, it might be a flat 1, or prehaps a set float, so some items can take longer then others.
@@ -52,7 +70,7 @@ public class InteractiveItem {
 
         // Use the deltaTime to increase the repairProgress to 100%
         if (RepairProgress < 100) {
-            RepairProgress += 10;
+            RepairProgress += (float)RepairCost;
         }
 
         // If the repair has reached 100% turn the module on by default.

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
@@ -14,9 +15,10 @@ public class GameController : MonoBehaviour {
     void Start () {
         operational_power_usage = 0;
         reserved_power_usage = 50;
-        materials = 0;
+        materials = 100;
         core_damage = 0;
         game_over = false;
+
     }
 	
 	// Update is called once per frame
@@ -24,7 +26,8 @@ public class GameController : MonoBehaviour {
 		if(core_damage > 100) {
             game_over = true;
         }
-	}
+
+    }
 
     public bool GameOver {
         get { return game_over; }

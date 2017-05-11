@@ -4,21 +4,27 @@ using UnityEngine;
 
 public class KeyboardController : MonoBehaviour {
 
-    MapController mc;
+    GameController gc;
+    PlayerController p;
 
 	// Use this for initialization
 	void Start () {
-        mc = (MapController)FindObjectOfType(typeof(MapController));
+        gc = (GameController)FindObjectOfType(typeof(GameController));
+        p = (PlayerController)FindObjectOfType(typeof(PlayerController));
     }
 	
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetKeyDown("r")) {
-            PlayerController p = (PlayerController)FindObjectOfType(typeof(PlayerController));
-
             if (p.Player.CurrTile.Item != null && p.Player.CurrTile.Item.needsRepair()) {
+                if (gc.Materials < p.Player.CurrTile.Item.RepairCost) {
+                    Debug.Log("Not enough materials, materials remaining "+ gc.Materials);
+                } else {
+                    gc.spendMaterials(p.Player.CurrTile.Item.RepairCost);
+                    p.Player.CurrTile.Item.repairItem();
+                    Debug.Log("materials remaining " + gc.Materials);
+                }
                 
-                p.Player.CurrTile.Item.repairItem();
                 Debug.Log("Repairing item, perc complete: "+p.Player.CurrTile.Item.RepairProgress);
             } else if(p.Player.CurrTile.Item != null && !p.Player.CurrTile.Item.needsRepair()) {
                 Debug.Log("Item is already repaired.");
@@ -28,7 +34,6 @@ public class KeyboardController : MonoBehaviour {
 
         }
         if (Input.GetKeyDown("o")) {
-            PlayerController p = (PlayerController)FindObjectOfType(typeof(PlayerController));
             if (p.Player.CurrTile.Item != null) {
                 if(p.Player.CurrTile.Item.Status==InteractiveItem.InteractiveStatus.On) {
                     p.Player.CurrTile.Item.turnOff();

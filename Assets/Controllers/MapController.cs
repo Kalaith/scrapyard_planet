@@ -37,9 +37,9 @@ public class MapController : MonoBehaviour {
                 }
                 tile_go.GetComponent<SpriteRenderer>().sortingOrder = 0;
 
-                if(tile_data.Item != null) {
+                if(tile_data.Item != null && itemController != null) {
                     Debug.Log("We have an item to spawn a game object on this tile at X:"+x+"Y:"+y);
-                    itemController.addItem(tile_data);
+                    itemController.addItem(x, y);
                 }
 
             }
