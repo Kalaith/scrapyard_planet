@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Player {
 
-    string name;
-
     public float X {
         get {
             return Mathf.Lerp(currTile.X, nextTile.X, movementPerc);
