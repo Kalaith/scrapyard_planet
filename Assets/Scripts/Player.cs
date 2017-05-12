@@ -95,6 +95,7 @@ public class Player {
         }
 
         set {
+            pathAStar = null;
             destTile = value;
         }
     }

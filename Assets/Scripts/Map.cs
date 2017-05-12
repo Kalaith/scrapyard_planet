@@ -32,7 +32,7 @@ public class Map {
         }
     }
 
-    public Map(int width = 9, int height = 9) {
+    public Map(int width = 11, int height = 11) {
         this.width = width;
         this.height = height;
 
