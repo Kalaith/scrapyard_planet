@@ -16,8 +16,11 @@ public class InteractiveController : MonoBehaviour {
     public void addItem(int x, int y) {
 
         GameObject item_go = new GameObject();
-
+        if (item_go_list == null) {
+            item_go_list = new List<GameObject>();
+        }
         item_go_list.Add(item_go);
+
         item_go.name = "Item_" + x + "_" + y;
         item_go.transform.position = new Vector3(x, y, 0);
         item_go.transform.SetParent(this.transform, true);
