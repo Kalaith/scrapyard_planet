@@ -32,11 +32,11 @@ public class Map {
         }
     }
 
-    public Map(int width = 11, int height = 11) {
+    public Map(string fileName, int width = 11, int height = 11) {
         this.width = width;
         this.height = height;
 
-        CreateMapFromFile("Assets/Levels/LEVEL_1.txt", width, height);
+        CreateMapFromFile(fileName, width, height);
         //CreateMap();
 
         Debug.Log("World created with " + (width * height) + " tiles");
@@ -63,10 +63,6 @@ public class Map {
                 tiles[x, y] = new Tile(this, x, y, cost);
                 tiles[x, y].Type = tileType;
 
-                // Just for testing, add an item to a tile, give that item a copy of the tile.
-                if (x == 1 && y == 3) {
-                    tiles[x, y].Item = new InteractiveItem(tiles[x, y]);
-                }
             }
         }
 
@@ -87,10 +83,7 @@ public class Map {
         for (int y = height-1; y >= 0; y--) {
             if ((line = file.ReadLine()) != null) {
                 split = line.Split(' ');
-                Debug.Log("Trying to process line: " + line + " Y:"+y);
                 for (int x = 0; x < width; x++) {
-                    Debug.Log("Split: X:"+x+"-"+ split[x]+"-");
-
                     // Empty
                     if (split[x] == "0") {
                         tiles[x, y] = new Tile(this, x, y, 0);
@@ -106,8 +99,18 @@ public class Map {
                         tiles[x, y] = new Tile(this, x, y, 1);
                         tiles[x, y].Type = Tile.TileType.Floor;
                     }
-                    // 3 is a floor with an interactive item
+                    // Dirt
                     if (split[x] == "3") {
+                        tiles[x, y] = new Tile(this, x, y, 3);
+                        tiles[x, y].Type = Tile.TileType.Dirt;
+                    }
+                    // Grass
+                    if (split[x] == "4") {
+                        tiles[x, y] = new Tile(this, x, y, 4);
+                        tiles[x, y].Type = Tile.TileType.Grass;
+                    }
+                    // 3 is a floor with an interactive item
+                    if (split[x] == "9") {
                         tiles[x, y] = new Tile(this, x, y, 1);
                         tiles[x, y].Type = Tile.TileType.Floor;
                         tiles[x, y].Item = new InteractiveItem(tiles[x, y]);
@@ -115,7 +118,6 @@ public class Map {
                 }  
             }
         }
-
 
         file.Close();
         TileGraph = new Path_TileGraph(this);

@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Player {
 
-    string name;
-
     public float X {
         get {
             return Mathf.Lerp(currTile.X, nextTile.X, movementPerc);
@@ -28,8 +26,7 @@ public class Player {
     Tile destTile;
     Map map;
 
-    public Player(string name, float speed, Map map, Tile currTile) {
-        this.name = name;
+    public Player(float speed, Map map, Tile currTile) {
         this.speed = speed;
         this.currTile = currTile;
         this.destTile = currTile;

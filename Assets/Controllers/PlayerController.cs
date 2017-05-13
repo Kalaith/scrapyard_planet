@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour {
         mc = (MapController)FindObjectOfType(typeof(MapController));
 
         // Create a new player
-        player = new Player("Bob", 2f, mc.Map, mc.Map.GetTileAt(2, 2));
+        player = new Player(2f, mc.Map, mc.Map.GetTileAt(2, 2));
         
         // Instaiate a game object for the player
         player_go = new GameObject();
@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour {
         player.Update_HandleMovement(Time.deltaTime);
         player_go.transform.position = new Vector3(Player.X, Player.Y, 0);
         Camera.main.transform.position = new Vector3(Player.X, Player.Y, Camera.main.transform.position.z);
-
     }
 }
 
