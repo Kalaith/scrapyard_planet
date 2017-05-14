@@ -31,6 +31,15 @@ public class InteractiveItem {
     // What tile is this object on, we might do the reverse of this, so a tile can hold an interactive item.
     Tile tile;
 
+    public double currentPowerUsage() {
+        if (status == InteractiveStatus.Off) {
+            return Reserved_power_usage;
+        } else if (status == InteractiveStatus.On) {
+            return (Reserved_power_usage+Operational_power_usage);
+        }
+        return 0;
+    }
+
     public float RepairProgress {
         get {
             return repairProgress;
@@ -55,14 +64,35 @@ public class InteractiveItem {
         get { return repairCost; }
     }
 
+    public double Operational_power_usage {
+        get {
+            return operational_power_usage;
+        }
+
+        set {
+            operational_power_usage = value;
+        }
+    }
+
+    public double Reserved_power_usage {
+        get {
+            return reserved_power_usage;
+        }
+
+        set {
+            reserved_power_usage = value;
+        }
+    }
+
     // Currently we dont need to init any variables since its assumed every part of the ship is not working
-    public InteractiveItem(Tile tile) {
+    public InteractiveItem(Tile tile, double operational = 50, double reserved = 10) {
         this.tile = tile;
         repairCost = 10;
 
         // Assign these from the constructor
-        operational_power_usage = 50;
-        reserved_power_usage = 10;
+        Operational_power_usage = operational;
+        Reserved_power_usage = reserved;
+
     }
 
     // Might do something diffrent from deltaTime, see how it goes, it might be a flat 1, or prehaps a set float, so some items can take longer then others.

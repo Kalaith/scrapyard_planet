@@ -21,7 +21,7 @@ public class MapController : MonoBehaviour {
     void Start () {
         Instance = this;
         Map = new Map("Assets/Levels/LEVEL_1.txt", 11, 11);
-        ExternalMap = new Map("Assets/Levels/LEVEL_ENEMY_1.txt", 10, 10);
+        ExternalMap = new Map("Assets/Levels/LEVEL_ENEMY_1.txt", 20, 20);
 
         itemController = (InteractiveController)FindObjectOfType(typeof(InteractiveController));
 
@@ -45,14 +45,14 @@ public class MapController : MonoBehaviour {
 
                 if(tile_data.Item != null && itemController != null) {
                     Debug.Log("We have an item to spawn a game object on this tile at X:"+x+"Y:"+y);
-                    itemController.addItem(x, y);
+                    itemController.addItem(tile_data.Item, x, y);
                 }
 
             }
         }
 
         
-        int startx = Map.Width+1;
+        int startx = Map.Width+10;
         Debug.Log("Enemy Map Spawning");
         // External Map, next to the players, on right hand side.
         for (int x = 0+startx; x < ExternalMap.Width+startx; x++) {
@@ -76,7 +76,7 @@ public class MapController : MonoBehaviour {
 
                 if (tile_data.Item != null && itemController != null) {
                     Debug.Log("We have an item to spawn a game object on this tile at X:" + x + "Y:" + y);
-                    itemController.addItem(x, y);
+                    itemController.addItem(tile_data.Item, x, y);
                 }
 
             }

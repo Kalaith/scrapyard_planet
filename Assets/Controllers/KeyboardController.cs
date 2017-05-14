@@ -7,8 +7,11 @@ public class KeyboardController : MonoBehaviour {
     GameController gc;
     PlayerController p;
 
-	// Use this for initialization
-	void Start () {
+    public Sprite button_on;
+    public Sprite button_off;
+
+    // Use this for initialization
+    void Start () {
         gc = (GameController)FindObjectOfType(typeof(GameController));
         p = (PlayerController)FindObjectOfType(typeof(PlayerController));
     }
@@ -24,6 +27,10 @@ public class KeyboardController : MonoBehaviour {
                     p.Player.CurrTile.Item.repairItem();
                     Debug.Log("materials remaining " + gc.Materials);
                 }
+                if(p.Player.CurrTile.Item.RepairProgress == 100) {
+                    // if we have repaired the switch, update the game object switch at the location we have done the repairs.
+                    GameObject.Find("Item_" + p.Player.CurrTile.X + "_" + p.Player.CurrTile.Y).GetComponent<SpriteRenderer>().sprite = button_on;
+                }
                 
                 Debug.Log("Repairing item, perc complete: "+p.Player.CurrTile.Item.RepairProgress);
             } else if(p.Player.CurrTile.Item != null && !p.Player.CurrTile.Item.needsRepair()) {
@@ -37,13 +44,14 @@ public class KeyboardController : MonoBehaviour {
             if (p.Player.CurrTile.Item != null) {
                 if(p.Player.CurrTile.Item.Status==InteractiveItem.InteractiveStatus.On) {
                     p.Player.CurrTile.Item.turnOff();
+                    GameObject.Find("Item_" + p.Player.CurrTile.X + "_" + p.Player.CurrTile.Y).GetComponent<SpriteRenderer>().sprite = button_off;
                     Debug.Log("Switch Off.");
                 } else if (p.Player.CurrTile.Item.Status == InteractiveItem.InteractiveStatus.Off) {
                     p.Player.CurrTile.Item.turnOn();
+                    GameObject.Find("Item_" + p.Player.CurrTile.X + "_" + p.Player.CurrTile.Y).GetComponent<SpriteRenderer>().sprite = button_on;
                     Debug.Log("Switch On.");
                 } else if (p.Player.CurrTile.Item.Status == InteractiveItem.InteractiveStatus.Damaged) {
                     Debug.Log("Switch needs to be repaired.");
-
                 } else {
                     Debug.Log("Switch is disabled.");
                 }

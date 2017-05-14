@@ -20,13 +20,14 @@ public class UIController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update() {
 
-        powerValue.text = gc.PowerUsage.ToString();
+        powerValue.text = (gc.OperationalPowerUsage + gc.ReservedPowerUsage).ToString();
         materialValue.text = gc.Materials.ToString();
 
         if (gc.GameOver) {
             gameOver.enabled = true;
         }
+        
 	}
 }

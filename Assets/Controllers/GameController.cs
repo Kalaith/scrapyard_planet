@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         operational_power_usage = 0;
-        reserved_power_usage = 50;
+        reserved_power_usage = 0;
         materials = 100;
         core_damage = 0;
         game_over = false;
@@ -62,10 +62,11 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    // How much power they are using is operational+reserved
-    public double PowerUsage {
-        get { return operational_power_usage + reserved_power_usage; }
+    public void ResetPowerUsage() {
+        operational_power_usage = 0;
+        reserved_power_usage = 0;
     }
+
 
     // UI will need to know the two seperate amounts.
     public double OperationalPowerUsage {
@@ -79,7 +80,7 @@ public class GameController : MonoBehaviour {
 
     // When a system is repaired, its turned on by default, so this should be called on interactiveitem repair is 100%
     public void increasePowerUsage(double operational, double reserved) {
-        if(operational >= 0 && reserved >= 0) {
+        if(operational >= 0 || reserved >= 0) {
             operational_power_usage += operational;
             reserved_power_usage += reserved;
         }
