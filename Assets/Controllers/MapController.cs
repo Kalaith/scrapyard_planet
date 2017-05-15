@@ -5,8 +5,8 @@ using UnityEngine;
 public class MapController : MonoBehaviour {
 
     public static MapController Instance { get; protected set; }
-    public Sprite floorSprite;
-    public Sprite wallSprite;
+    private Sprite floorSprite;
+    private Sprite wallSprite;
     public Sprite itemSwitchSprite;
 
     public Sprite grassSprite;
@@ -36,9 +36,16 @@ public class MapController : MonoBehaviour {
                 tile_go.AddComponent<SpriteRenderer>();
                 tile_data.RegisterTileTypeChangedCallback((tile) => { OnTileTypeChanged(tile, tile_go); });
                  if (tile_data.Type == Tile.TileType.Floor) {
+                    int randomTile = Random.Range(5, 10);
+                    floorSprite = Resources.Load("InternalShip/metaltile"+randomTile, typeof(Sprite)) as Sprite;
+
                     tile_go.GetComponent<SpriteRenderer>().sprite = floorSprite;
                 } else if (tile_data.Type == Tile.TileType.Wall) {
+                    int randomTile = Random.Range(1, 4);
+                    wallSprite = Resources.Load("InternalShip/metaltile" + randomTile, typeof(Sprite)) as Sprite;
+
                     tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                  
                 }
 
                 tile_go.GetComponent<SpriteRenderer>().sortingOrder = 0;
