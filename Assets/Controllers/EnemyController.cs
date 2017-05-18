@@ -10,7 +10,6 @@ public class EnemyController : MonoBehaviour {
     public Transform EnemyParent;
     public Transform Target;
 
-
     // Use this for initialization
     void Start () {
         for (int x = 0; x < 20; x++)

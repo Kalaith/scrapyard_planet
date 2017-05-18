@@ -5,7 +5,17 @@ using System;
 
 public class Tile {
 
-    public enum TileType { Empty, Floor, Wall, Dirt, Grass };
+    /*    
+    External Tiles
+
+    5 Roof
+    6 HasTurrent
+    7 ExternalShipWall
+    8 Core (Interactive Item)
+    9 Turrent (Interactive Item)
+    */
+
+    public enum TileType { Empty, Floor, Wall, Dirt, Grass, Roof, HasTurrent, ExternalWall, Core, Turrent };
 
     TileType type = TileType.Empty;
 

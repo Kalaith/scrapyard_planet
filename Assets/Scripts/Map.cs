@@ -101,20 +101,50 @@ public class Map {
                     }
                     // Dirt
                     if (split[x] == "3") {
-                        tiles[x, y] = new Tile(this, x, y, 3);
+                        tiles[x, y] = new Tile(this, x, y, 1);
                         tiles[x, y].Type = Tile.TileType.Dirt;
                     }
                     // Grass
                     if (split[x] == "4") {
-                        tiles[x, y] = new Tile(this, x, y, 4);
+                        tiles[x, y] = new Tile(this, x, y, 1);
                         tiles[x, y].Type = Tile.TileType.Grass;
                     }
-                    // 3 is a floor with an interactive item
-                    if (split[x] == "9") {
+                    // Roof
+                    if (split[x] == "5") {
+                        tiles[x, y] = new Tile(this, x, y, 9);
+                        tiles[x, y].Type = Tile.TileType.Roof;
+                    }
+                    // HasTurrent
+                    if (split[x] == "6") {
+                        tiles[x, y] = new Tile(this, x, y, 9);
+                        tiles[x, y].Type = Tile.TileType.HasTurrent;
+                    }
+                    // External Ship Wall
+                    if (split[x] == "7") {
+                        tiles[x, y] = new Tile(this, x, y, 9);
+                        tiles[x, y].Type = Tile.TileType.ExternalWall;
+                    }
+                    // HasTurrent
+                    if (split[x] == "8") {
+                        tiles[x, y] = new Tile(this, x, y, 9);
+                        tiles[x, y].Type = Tile.TileType.Core;
+                    }
+                    
+                
+                    // Switch
+                    if (split[x] == "A") {
                         tiles[x, y] = new Tile(this, x, y, 1);
                         tiles[x, y].Type = Tile.TileType.Floor;
                         tiles[x, y].Item = new InteractiveItem(tiles[x, y]);
+                    }                   
+                    // Turrent
+                    if (split[x] == "B") {
+                        tiles[x, y] = new Tile(this, x, y, 9);
+                        tiles[x, y].Type = Tile.TileType.Turrent;
+                        tiles[x, y].Item = new InteractiveItem(tiles[x, y]);
                     }
+
+
                 }  
             }
         }

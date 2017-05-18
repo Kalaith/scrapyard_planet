@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class InteractiveController : MonoBehaviour {
 
-    public Sprite itemSprite;
-
     List<GameObject> item_go_list;
     List<InteractiveItem> item_list;
     GameController gc;
@@ -16,7 +14,30 @@ public class InteractiveController : MonoBehaviour {
         gc = (GameController)FindObjectOfType(typeof(GameController));
     }
 
-    public void addItem(InteractiveItem item, int x, int y) {
+    List<GameObject> turret_go_list;
+    private List<Turret> turrets;
+
+    public void addTurret(Turret t, int x, int y, Sprite turrentSprite) {
+        if (turrets == null) {
+            turrets = new List<Turret>();
+        }
+            turrets.Add(t);
+
+        GameObject turret_go = new GameObject();
+        if (turret_go_list == null) {
+            turret_go_list = new List<GameObject>();
+        }
+        turret_go_list.Add(turret_go);
+
+        turret_go.name = "Item_" + x + "_" + y;
+        turret_go.transform.position = new Vector3(x, y, 0);
+        turret_go.transform.SetParent(this.transform, true);
+        turret_go.AddComponent<SpriteRenderer>();
+        turret_go.GetComponent<SpriteRenderer>().sprite = turrentSprite;
+        turret_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
+    }
+
+    public void addItem(InteractiveItem item, int x, int y, Sprite itemSprite) {
 
         if (item_list == null) {
             item_list = new List<InteractiveItem>();

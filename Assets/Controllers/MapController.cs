@@ -52,19 +52,17 @@ public class MapController : MonoBehaviour {
 
                 if(tile_data.Item != null && itemController != null) {
                     Debug.Log("We have an item to spawn a game object on this tile at X:"+x+"Y:"+y);
-                    itemController.addItem(tile_data.Item, x, y);
+                    itemController.addItem(tile_data.Item, x, y, Resources.Load("button_off", typeof(Sprite)) as Sprite);
                 }
 
             }
         }
 
-        
         int startx = Map.Width+10;
         Debug.Log("Enemy Map Spawning");
         // External Map, next to the players, on right hand side.
         for (int x = 0+startx; x < ExternalMap.Width+startx; x++) {
             for (int y = 0; y < ExternalMap.Height; y++) {
-                Debug.Log("Check X:" + (x-startx) + " Check Y:" + y);
                 Tile tile_data = ExternalMap.GetTileAt(x-startx, y);
                 GameObject tile_go = new GameObject();
 
@@ -73,17 +71,37 @@ public class MapController : MonoBehaviour {
                 tile_go.transform.SetParent(this.transform, true);
                 tile_go.AddComponent<SpriteRenderer>();
                 tile_data.RegisterTileTypeChangedCallback((tile) => { OnTileTypeChanged(tile, tile_go); });
-                Debug.Log("Tile Type;"+ tile_data.Type);
+
                 if (tile_data.Type == Tile.TileType.Grass) {
-                    tile_go.GetComponent<SpriteRenderer>().sprite = grassSprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = Resources.Load("ExternalTiles/grass_32px", typeof(Sprite)) as Sprite;
                 } else if (tile_data.Type == Tile.TileType.Dirt) {
-                    tile_go.GetComponent<SpriteRenderer>().sprite = dirtSprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = Resources.Load("ExternalTiles/dirt_32px", typeof(Sprite)) as Sprite;
+                } else if (tile_data.Type == Tile.TileType.Roof) {
+                    tile_go.GetComponent<SpriteRenderer>().sprite = Resources.Load("InternalShip/metaltile1", typeof(Sprite)) as Sprite;
+                } else if (tile_data.Type == Tile.TileType.HasTurrent) {
+                    tile_go.GetComponent<SpriteRenderer>().sprite = Resources.Load("InternalShip/metaltile3", typeof(Sprite)) as Sprite;
+                } else if (tile_data.Type == Tile.TileType.ExternalWall) {
+                    tile_go.GetComponent<SpriteRenderer>().sprite = Resources.Load("InternalShip/metaltile2", typeof(Sprite)) as Sprite;
+                } else if (tile_data.Type == Tile.TileType.Core) {
+                    tile_go.GetComponent<SpriteRenderer>().sprite = Resources.Load("InternalShip/metaltile4", typeof(Sprite)) as Sprite;
+                } else if (tile_data.Type == Tile.TileType.Turrent) {
+                    tile_go.GetComponent<SpriteRenderer>().sprite = Resources.Load("InternalShip/metaltile5", typeof(Sprite)) as Sprite;
                 }
+
+                /*
+                5 Roof
+                6 HasTurrent
+                7 ExternalShipWall
+                8 Core
+                9 Turrent (Interactive Item)
+                */
+
                 tile_go.GetComponent<SpriteRenderer>().sortingOrder = 0;
 
                 if (tile_data.Item != null && itemController != null) {
-                    Debug.Log("We have an item to spawn a game object on this tile at X:" + x + "Y:" + y);
-                    itemController.addItem(tile_data.Item, x, y);
+                    Debug.Log("We have a turrent to spawn on this tile at X:" + x + "Y:" + y);
+                    Turret turret = new Turret(tile_data.Item, "Cannon");
+                    itemController.addTurret(turret, x, y, Resources.Load("ExternalTiles/gun", typeof(Sprite)) as Sprite);
                 }
 
             }
