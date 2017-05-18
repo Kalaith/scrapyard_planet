@@ -10,6 +10,7 @@ public class EnemyController : MonoBehaviour {
     private List<Turret> _Turrets;
 
     private MapController mc;
+    private InteractiveController ic;
 
     public void addTurret(Turret turrent) {
         _Turrets.Add(turrent);
@@ -19,6 +20,7 @@ public class EnemyController : MonoBehaviour {
     void Start () {
         Random.InitState(10);
         mc = (MapController)FindObjectOfType(typeof(MapController));
+        ic = (InteractiveController)FindObjectOfType(typeof(InteractiveController));
 
         for (int i = 0; i < 20; i++)
         {
@@ -59,7 +61,10 @@ public class EnemyController : MonoBehaviour {
             enemyGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("Enemies/smallbotbase", typeof(Sprite)) as Sprite;
             enemyGO.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
-            _Enemies.Add(new Enemy(1, 1, enemyGO, mc.Core));
+            Enemy e = new Enemy(1, 1, enemyGO, mc.Core);
+            _Enemies.Add(e);
+
+            ic.assignTarget(e);
         }
     }
 	

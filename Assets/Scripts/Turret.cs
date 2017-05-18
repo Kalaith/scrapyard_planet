@@ -19,6 +19,7 @@ public class Turret {
         _Switch = s;
         _Type = t;
         _EnemyTargets = new List<GameObject>();
+        _Switch.Status = InteractiveItem.InteractiveStatus.On;
     }
 
     // Returns the current target of the turrent, or null if no current enemy to target
@@ -57,6 +58,16 @@ public class Turret {
 
         set {
             _BullPS = value;
+        }
+    }
+
+    public GameObject TurrentGO {
+        get {
+            return _TurrentGO;
+        }
+
+        set {
+            _TurrentGO = value;
         }
     }
 }

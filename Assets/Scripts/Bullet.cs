@@ -8,13 +8,14 @@ public class Bullet {
     private GameObject _Target;
     private float _Speed;
 
-    public void BulletInit(GameObject Target, float Speed)
+    public Bullet(float speed, GameObject bulletGO, GameObject Target)
     {
         _Target = Target;
-        _Speed = Speed;
+        _Speed = speed;
+        _BulletGO = bulletGO;
     }
 
-	void Update ()
+    public void Update()
     {
         _BulletGO.transform.position = Vector3.MoveTowards(_BulletGO.transform.position, _Target.transform.position, _Speed*Time.deltaTime);
     }

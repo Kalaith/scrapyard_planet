@@ -9,30 +9,26 @@ public class InteractiveController : MonoBehaviour {
     GameController gc;
     // Use this for initialization
     void Start () {
-        item_go_list = new List<GameObject>();
-        
+
+       
         gc = (GameController)FindObjectOfType(typeof(GameController));
     }
 
 
     public void addTurret(Turret t, int x, int y, Sprite turrentSprite) {
-        if (turrets == null) {
-            turrets = new List<Turret>();
+        if (_Turrets == null) {
+            _Turrets = new List<Turret>();
         }
-            turrets.Add(t);
+        _Turrets.Add(t);
 
         GameObject turret_go = new GameObject();
-        if (turret_go_list == null) {
-            turret_go_list = new List<GameObject>();
-        }
-        turret_go_list.Add(turret_go);
-
         turret_go.name = "Item_" + x + "_" + y;
         turret_go.transform.position = new Vector3(x, y, 0);
         turret_go.transform.SetParent(this.transform, true);
         turret_go.AddComponent<SpriteRenderer>();
         turret_go.GetComponent<SpriteRenderer>().sprite = turrentSprite;
         turret_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        t.TurrentGO = turret_go;
     }
 
     public void addItem(InteractiveItem item, int x, int y, Sprite itemSprite) {
@@ -57,12 +53,23 @@ public class InteractiveController : MonoBehaviour {
 
     }
 
-    List<GameObject> turret_go_list;
-    private List<Turret> turrets;
-    private GameObject bullet;
+    public void assignTarget(Enemy enemy) {
+        foreach (Turret turret in _Turrets) {
+            turret.addTarget(enemy.EnemyGO);
+            Debug.Log("Turret Target X:"+enemy.X+" Y:"+enemy.Y);
+        }
+        Debug.Log("assignTarget called");
+    }
 
+    private List<Turret> _Turrets;
+    private List<Bullet> _Bullets;
     // Update is called once per frame
     void Update () {
+
+        if (_Bullets == null) {
+            _Bullets = new List<Bullet>();
+        }
+        
         // Instead of setting the power usage back and forth, every update just query every item for its current power usage.
         gc.ResetPowerUsage();
 		foreach(InteractiveItem item in item_list) {
@@ -73,16 +80,38 @@ public class InteractiveController : MonoBehaviour {
             }
         }
 
-        foreach (Turret turret in turrets) {
+        foreach (Turret turret in _Turrets) {
+            
             if (turret.Status == InteractiveItem.InteractiveStatus.On) {
-                GameObject bull = Instantiate(bullet, this.transform.parent);
-                bull.GetComponent<Bullet>().BulletInit(turret.CurrentTarget(), 100);
-                turret.BullPS = 1000;
 
+                GameObject target = turret.CurrentTarget();
+
+                if (target != null) {
+
+                Debug.Log("Turrets");
+
+                    GameObject bulletGO = new GameObject(); ;
+                    bulletGO.name = "Bullet_"+target.ToString();
+                    Vector3 position = new Vector3(turret.TurrentGO.transform.position.x + 0.5f, turret.TurrentGO.transform.position.y + 0.5f, 0);
+
+                    bulletGO.transform.position = turret.TurrentGO.transform.position;
+                    bulletGO.transform.SetParent(this.transform, true);
+                    bulletGO.AddComponent<SpriteRenderer>();
+                    bulletGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("placeBullet", typeof(Sprite)) as Sprite;
+                    bulletGO.GetComponent<SpriteRenderer>().sortingOrder = 3;
+
+                    _Bullets.Add(new Bullet(1, bulletGO, target));
+                }
             }
         }
-            // Temporary, when the power core is installed it starts usinbg power to try and turn on the ship.
-            // This should be a better object then hacking it onto this.
-            gc.increasePowerUsage(0, 100);
+
+        foreach(Bullet bullet in _Bullets) {
+            bullet.Update();
+            Debug.Log("We have bullets");
+        }
+
+        // Temporary, when the power core is installed it starts usinbg power to try and turn on the ship.
+        // This should be a better object then hacking it onto this.
+        gc.increasePowerUsage(0, 100);
     }
 }
