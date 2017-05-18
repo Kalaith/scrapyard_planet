@@ -156,12 +156,8 @@ public class Map {
 
     public Tile GetTileAt(int x, int y) {
         if(x >= width || x < 0 || y >= height || y < 0) {
-            //Debug.LogError("Tile ("+x+","+y+"), is out of range");
+            //Debug.LogError("Tile ("+x+","+y+"), is out of range ("+width+", "+height+")");
             return null;
-        }
-
-        if (tiles[x, y] == null) {
-            tiles[x, y] = new Tile(this, x, y, 1);
         }
 
         return tiles[x, y];

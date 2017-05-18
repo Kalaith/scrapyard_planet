@@ -4,56 +4,84 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour {
 
-    public List<GameObject> Enemies = new List<GameObject>();
-    public float EnemySpeed;
-    public GameObject Enemy1;
-    public Transform EnemyParent;
-    public Transform Target;
+    public List<Enemy> _Enemies = new List<Enemy>();
+    public float _EnemySpeed;
+
+    private List<Turret> _Turrets;
+
+    private MapController mc;
+
+    public void addTurret(Turret turrent) {
+        _Turrets.Add(turrent);
+    }
 
     // Use this for initialization
     void Start () {
-        for (int x = 0; x < 20; x++)
-        {
-            Vector3 position = new Vector3(Target.position.x + Random.Range(-2.8f, 2.8f), Target.position.y + Random.Range(-4.65f, 4.65f), 0);
-            GameObject pre = Instantiate(Enemy1, position, Quaternion.identity);
-            pre.name = "Enemy";
-            Enemies.Add(pre);
-            pre.transform.parent = EnemyParent;
+        Random.InitState(10);
+        mc = (MapController)FindObjectOfType(typeof(MapController));
 
-            if (GameObject.Find("OverviewShip").transform.position.y > pre.transform.position.y)
-            {
-                if (GameObject.Find("OverviewShip").transform.position.x > pre.transform.position.x)
-                {
-                    //add to turret firing list (bottom left)
-                    GameObject.Find("TurretBL").GetComponent<Turret>().Targets.Add(pre);
-                } else
-                {
-                    //add to turret firing list (bottom right)
-                    GameObject.Find("TurretBR").GetComponent<Turret>().Targets.Add(pre);
-                }
-            } else
-            {
-                if (GameObject.Find("OverviewShip").transform.position.x > pre.transform.position.x)
-                {
-                    //add to turret firing list (top Left)
-                    GameObject.Find("TurretTL").GetComponent<Turret>().Targets.Add(pre);
-                }
-                else
-                {
-                    //add to turret firing list (top right)
-                    GameObject.Find("TurretTR").GetComponent<Turret>().Targets.Add(pre);
-                }
+        for (int i = 0; i < 20; i++)
+        {
+            int x = 0;
+            int y = 0;
+
+            int direction = Random.Range(4, 1);
+            if(direction == 1 ) {
+            // Spawn from the left side
+                x = Random.Range(mc.startx - 1, mc.startx);
+                y = Random.Range(0, mc.ExternalMap.Height);
             }
+
+            if (direction == 2) {
+                // Spawn from the right side
+                x = Random.Range(mc.startx + mc.ExternalMap.Width, mc.startx + mc.ExternalMap.Width + 1);
+                y = Random.Range(0, mc.ExternalMap.Height);
+            }
+
+            if (direction == 3) {
+                // Spawn from top
+                y = Random.Range(mc.ExternalMap.Height + 1, mc.ExternalMap.Height);
+                x = Random.Range(mc.startx, mc.startx + mc.ExternalMap.Width);
+            }
+
+            if (direction == 4) {
+                // Spawn from bottom
+                y = Random.Range(0, -1);
+                x = Random.Range(mc.startx, mc.startx + mc.ExternalMap.Width);
+            }
+
+            Vector3 position = new Vector3(x, y, 0);
+            GameObject enemyGO = new GameObject(); ;
+            enemyGO.name = "Enemy_" + x;
+            enemyGO.transform.position = position;
+            enemyGO.transform.SetParent(this.transform, true);
+            enemyGO.AddComponent<SpriteRenderer>();
+            enemyGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("Enemies/smallbotbase", typeof(Sprite)) as Sprite;
+            enemyGO.GetComponent<SpriteRenderer>().sortingOrder = 1;
+
+            _Enemies.Add(new Enemy(1, 1, enemyGO, mc.Core));
         }
     }
 	
 	// Update is called once per frame
 	void Update () {
-        foreach (GameObject x in Enemies)
-        {
-            x.GetComponent<Enemy>().MoveEnemies(EnemySpeed);
+
+        foreach (Enemy enemy in _Enemies) {
+            Tile tile = mc.ExternalMap.GetTileAt(enemy.X - mc.startx, enemy.Y);
+
+            if (tile != null) {
+
+                if (tile.Cost == 9) {
+                    enemy.MoveEnemies(_EnemySpeed*-2);
+                } else {
+                    enemy.MoveEnemies(_EnemySpeed);
+                }
+            } else {
+
+                enemy.MoveEnemies(_EnemySpeed);
+            }
 
         }
-		
+        
 	}
 }

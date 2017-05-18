@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour {
+public class Bullet {
 
+    private GameObject _BulletGO;
     private GameObject _Target;
     private float _Speed;
 
@@ -15,14 +16,7 @@ public class Bullet : MonoBehaviour {
 
 	void Update ()
     {
-        transform.position = Vector3.MoveTowards(transform.position, _Target.transform.position, _Speed*Time.deltaTime);
-    }
-
-    void OnCollisionEnter2D(Collision2D col)
-    {
-        Debug.Log("collision found!");
-            Destroy(col.gameObject);
-            Destroy(gameObject);
+        _BulletGO.transform.position = Vector3.MoveTowards(_BulletGO.transform.position, _Target.transform.position, _Speed*Time.deltaTime);
     }
 
 }

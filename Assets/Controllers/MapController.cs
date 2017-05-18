@@ -15,6 +15,21 @@ public class MapController : MonoBehaviour {
     public Map Map { get; protected set; }
     public Map ExternalMap { get; protected set; }
 
+    public int ExternalModifier = 10;
+    public int startx = 0;
+
+    public GameObject Core {
+        get {
+            return core;
+        }
+
+        set {
+            core = value;
+        }
+    }
+
+    private GameObject core;
+
     InteractiveController itemController;
 
     // Use this for initialization
@@ -58,7 +73,7 @@ public class MapController : MonoBehaviour {
             }
         }
 
-        int startx = Map.Width+10;
+        startx = Map.Width+ExternalModifier;
         Debug.Log("Enemy Map Spawning");
         // External Map, next to the players, on right hand side.
         for (int x = 0+startx; x < ExternalMap.Width+startx; x++) {
@@ -84,6 +99,7 @@ public class MapController : MonoBehaviour {
                     tile_go.GetComponent<SpriteRenderer>().sprite = Resources.Load("InternalShip/metaltile2", typeof(Sprite)) as Sprite;
                 } else if (tile_data.Type == Tile.TileType.Core) {
                     tile_go.GetComponent<SpriteRenderer>().sprite = Resources.Load("InternalShip/metaltile4", typeof(Sprite)) as Sprite;
+                    Core = tile_go;
                 } else if (tile_data.Type == Tile.TileType.Turrent) {
                     tile_go.GetComponent<SpriteRenderer>().sprite = Resources.Load("InternalShip/metaltile5", typeof(Sprite)) as Sprite;
                 }

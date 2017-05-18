@@ -2,41 +2,61 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Turret : MonoBehaviour {
+public class Turret {
+
+    private GameObject _TurrentGO;
+    private GameObject _CurrentTarget;
+    private List<GameObject> _EnemyTargets = new List<GameObject>();
 
     private InteractiveItem _Switch;
-    private string _Type;
-    public List<GameObject> Targets = new List<GameObject>();
-    public GameObject bullet;
-    public int BullSpeed;
-    public int BullPS;
 
-    public Turret(InteractiveItem Switch, string Type)
+    private string _Type;
+
+    private int _BullPS;
+
+    public Turret(InteractiveItem s, string t)
     {
-        _Switch = Switch;
-        _Type = Type;
+        _Switch = s;
+        _Type = t;
+        _EnemyTargets = new List<GameObject>();
     }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        //if (_Switch.Status == InteractiveItem.InteractiveStatus.On)
-        //{
-        if (BullPS <= 0)
-        {
-            if (Targets.Count > 0)
-            {
-                GameObject bull = Instantiate(bullet, this.transform.parent);
-                bull.GetComponent<Bullet>().BulletInit(Targets[0], BullSpeed);
-                BullPS = 1000;
+    // Returns the current target of the turrent, or null if no current enemy to target
+    public GameObject CurrentTarget() {
+
+        if (_CurrentTarget == null) {
+            if (EnemyTargets.Count > 0) {
+                _CurrentTarget = _EnemyTargets[0];
+                _EnemyTargets.RemoveAt(0);
+            } else {
+                _CurrentTarget = null;
             }
         }
-            
-        BullPS -= 1;
-        //}
-	}
+        return _CurrentTarget;
+    }
+
+    public void addTarget(GameObject e) {
+        _EnemyTargets.Add(e);
+    }
+
+    // This might be to much, the add should be enough.
+    public List<GameObject> EnemyTargets {
+        get { return _EnemyTargets; }
+        set { _EnemyTargets = value; }
+    }
+
+    // Get the status from the switch, the switch controls its own status so we dont set from the turrent
+    public InteractiveItem.InteractiveStatus Status {
+        get { return _Switch.Status; }
+    }
+
+    public int BullPS {
+        get {
+            return _BullPS;
+        }
+
+        set {
+            _BullPS = value;
+        }
+    }
 }

@@ -14,8 +14,6 @@ public class InteractiveController : MonoBehaviour {
         gc = (GameController)FindObjectOfType(typeof(GameController));
     }
 
-    List<GameObject> turret_go_list;
-    private List<Turret> turrets;
 
     public void addTurret(Turret t, int x, int y, Sprite turrentSprite) {
         if (turrets == null) {
@@ -58,9 +56,13 @@ public class InteractiveController : MonoBehaviour {
         item_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    List<GameObject> turret_go_list;
+    private List<Turret> turrets;
+    private GameObject bullet;
+
+    // Update is called once per frame
+    void Update () {
         // Instead of setting the power usage back and forth, every update just query every item for its current power usage.
         gc.ResetPowerUsage();
 		foreach(InteractiveItem item in item_list) {
@@ -70,8 +72,17 @@ public class InteractiveController : MonoBehaviour {
                 gc.increasePowerUsage(0, item.Reserved_power_usage);
             }
         }
-        // Temporary, when the power core is installed it starts usinbg power to try and turn on the ship.
-        // This should be a better object then hacking it onto this.
-        gc.increasePowerUsage(0, 100);
+
+        foreach (Turret turret in turrets) {
+            if (turret.Status == InteractiveItem.InteractiveStatus.On) {
+                GameObject bull = Instantiate(bullet, this.transform.parent);
+                bull.GetComponent<Bullet>().BulletInit(turret.CurrentTarget(), 100);
+                turret.BullPS = 1000;
+
+            }
+        }
+            // Temporary, when the power core is installed it starts usinbg power to try and turn on the ship.
+            // This should be a better object then hacking it onto this.
+            gc.increasePowerUsage(0, 100);
     }
 }
