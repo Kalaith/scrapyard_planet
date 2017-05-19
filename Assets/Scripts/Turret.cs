@@ -13,35 +13,35 @@ public class Turret {
     private string _Type;
 
     private int _BullPS;
+    private int _Range;
 
-    public Turret(InteractiveItem s, string t)
+    public Turret(InteractiveItem iswitch, string type, int range)
     {
-        _Switch = s;
-        _Type = t;
+        _Switch = iswitch;
+        _Type = type;
         _EnemyTargets = new List<Enemy>();
         _Switch.Status = InteractiveItem.InteractiveStatus.On;
+        _Range = range;
     }
 
     // Returns the current target of the turrent, or null if no current enemy to target
     public Enemy CurrentTarget() {
-        Debug.Log("Current Target Activiated");
-        if (_CurrentTarget != null && _CurrentTarget.Health <= 0) {
+        //Debug.Log("Current Target Activiated");
+        if (_CurrentTarget != null && (_CurrentTarget.Health <= 0 || _CurrentTarget.Dead)) {
             _CurrentTarget = null;
             
-            Debug.Log("Current Target is dead.");
+            //Debug.Log("Current Target is dead.");
         }
 
         if (_CurrentTarget == null) {
             if (EnemyTargets.Count > 0) {
                 _CurrentTarget = _EnemyTargets[0];
                 _EnemyTargets.RemoveAt(0);
-                Debug.Log("New Target Assigned.");
+                //Debug.Log("New Target Assigned.");
             } else {
                 _CurrentTarget = null;
             }
         }
-
-        
 
         return _CurrentTarget;
     }
@@ -62,22 +62,17 @@ public class Turret {
     }
 
     public int BullPS {
-        get {
-            return _BullPS;
-        }
+        get { return _BullPS; }
+        set { _BullPS = value; }
+    }
 
-        set {
-            _BullPS = value;
-        }
+    public int Range {
+        get { return _Range; }
+        set { _Range = value; }
     }
 
     public GameObject TurrentGO {
-        get {
-            return _TurrentGO;
-        }
-
-        set {
-            _TurrentGO = value;
-        }
+        get { return _TurrentGO; }
+        set { _TurrentGO = value; }
     }
 }

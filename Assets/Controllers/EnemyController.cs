@@ -62,6 +62,9 @@ public class EnemyController : MonoBehaviour {
             enemyGO.AddComponent<SpriteRenderer>();
             enemyGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("Enemies/smallbotbase", typeof(Sprite)) as Sprite;
             enemyGO.GetComponent<SpriteRenderer>().sortingOrder = 1;
+            enemyGO.AddComponent<CircleCollider2D>();
+            enemyGO.GetComponent<CircleCollider2D>().radius = 0.3f;
+            enemyGO.GetComponent<CircleCollider2D>().isTrigger = true;
 
             Enemy e = new Enemy(1, 1, 10, enemyGO, mc.Core);
             _Enemies.Add(e);
@@ -95,4 +98,21 @@ public class EnemyController : MonoBehaviour {
         }
         
 	}
+
+    public List<Enemy> InRange(Vector3 position, int range) {
+        List<Enemy> inRange = new List<Enemy>();
+
+        // Currently loops and compares by the range, would like if this was converted from range to radius.
+        foreach (Enemy enemy in _Enemies) {
+            // We do not want to add dead enemies.
+            if (enemy.Health > 0 && !enemy.Dead) {
+                if (enemy.EnemyGO.transform.position.x >= (position.x - range) && enemy.EnemyGO.transform.position.x <= (position.x + range)) {
+                    if (enemy.EnemyGO.transform.position.y >= (position.y - range) && enemy.EnemyGO.transform.position.y <= (position.y + range)) {
+                        inRange.Add(enemy);
+                    }
+                }
+            }
+        }
+        return inRange;
+    }
 }

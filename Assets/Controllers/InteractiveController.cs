@@ -7,12 +7,13 @@ public class InteractiveController : MonoBehaviour {
     List<GameObject> item_go_list;
     List<InteractiveItem> item_list;
     GameController gc;
-
+    EnemyController ec;
     // Use this for initialization
     void Start () {
 
        
         gc = (GameController)FindObjectOfType(typeof(GameController));
+        ec = (EnemyController)FindObjectOfType(typeof(EnemyController));
     }
 
 
@@ -29,6 +30,9 @@ public class InteractiveController : MonoBehaviour {
         turret_go.AddComponent<SpriteRenderer>();
         turret_go.GetComponent<SpriteRenderer>().sprite = turrentSprite;
         turret_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        turret_go.AddComponent<CircleCollider2D>();
+        turret_go.GetComponent<CircleCollider2D>().radius = 3f;
+
         t.TurrentGO = turret_go;
     }
 
@@ -57,9 +61,7 @@ public class InteractiveController : MonoBehaviour {
     public void assignTarget(Enemy enemy) {
         foreach (Turret turret in _Turrets) {
             turret.addTarget(enemy);
-            Debug.Log("Turret Target X:"+enemy.X+" Y:"+enemy.Y);
         }
-        Debug.Log("assignTarget called");
     }
 
     private List<Turret> _Turrets;
@@ -84,11 +86,13 @@ public class InteractiveController : MonoBehaviour {
         foreach (Turret turret in _Turrets) {
             
             if (turret.Status == InteractiveItem.InteractiveStatus.On) {
+                // We want to find all enemies that are in range of the turrent 
+                turret.EnemyTargets = ec.InRange(turret.TurrentGO.transform.position, turret.Range);
                 if (turret.BullPS <= 0) {
-                    Debug.Log("Turrent Firing");
+                    //Debug.Log("Turrent Firing");
                     Enemy target = turret.CurrentTarget();
 
-                    if (target != null) {
+                    if (target != null && !target.Dead) {
 
                         GameObject bulletGO = new GameObject(); ;
                         bulletGO.name = "Bullet_" + target.ToString();
@@ -100,8 +104,11 @@ public class InteractiveController : MonoBehaviour {
                         bulletGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("placeBullet", typeof(Sprite)) as Sprite;
                         bulletGO.GetComponent<SpriteRenderer>().sortingOrder = 3;
 
-                        _Bullets.Add(new Bullet(1, bulletGO, target));
-                        turret.BullPS = 250;
+                        bulletGO.AddComponent<CircleCollider2D>();
+                        bulletGO.GetComponent<CircleCollider2D>().radius = 0.2f;
+
+                        _Bullets.Add(new Bullet(2, bulletGO, target));
+                        turret.BullPS = 200;
                     }
                 }
             }
@@ -115,8 +122,6 @@ public class InteractiveController : MonoBehaviour {
 
         foreach (Bullet bullet in _Bullets) {
             if (bullet.TargetHit) {
-
-                Debug.Log("Target Hit");
                 _Bullets.Remove(bullet);
                 bullet.Dispose();
                 break;

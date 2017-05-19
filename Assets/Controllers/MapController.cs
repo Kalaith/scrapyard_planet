@@ -116,7 +116,7 @@ public class MapController : MonoBehaviour {
 
                 if (tile_data.Item != null && itemController != null) {
                     Debug.Log("We have a turrent to spawn on this tile at X:" + x + "Y:" + y);
-                    Turret turret = new Turret(tile_data.Item, "Cannon");
+                    Turret turret = new Turret(tile_data.Item, "Cannon", 3);
                     itemController.addTurret(turret, x, y, Resources.Load("ExternalTiles/gun", typeof(Sprite)) as Sprite);
                 }
 

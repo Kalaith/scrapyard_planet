@@ -39,7 +39,6 @@ public class Bullet : IDisposable {
                 _Target.Health = _Target.Health - 1;
                 _TargetHit = true;
                 _BulletGO.SetActive(false);
-                Debug.Log("Collision");
             }
         }
     }
