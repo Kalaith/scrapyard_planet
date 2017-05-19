@@ -101,7 +101,7 @@ public class InteractiveController : MonoBehaviour {
                         bulletGO.GetComponent<SpriteRenderer>().sortingOrder = 3;
 
                         _Bullets.Add(new Bullet(1, bulletGO, target));
-                        turret.BullPS = 1000;
+                        turret.BullPS = 250;
                     }
                 }
             }
@@ -115,6 +115,8 @@ public class InteractiveController : MonoBehaviour {
 
         foreach (Bullet bullet in _Bullets) {
             if (bullet.TargetHit) {
+
+                Debug.Log("Target Hit");
                 _Bullets.Remove(bullet);
                 bullet.Dispose();
                 break;

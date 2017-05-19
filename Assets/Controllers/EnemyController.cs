@@ -11,6 +11,7 @@ public class EnemyController : MonoBehaviour {
 
     private MapController mc;
     private InteractiveController ic;
+    private GameController gc;
 
     public void addTurret(Turret turrent) {
         _Turrets.Add(turrent);
@@ -18,9 +19,10 @@ public class EnemyController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        Random.InitState(10);
+
         mc = (MapController)FindObjectOfType(typeof(MapController));
         ic = (InteractiveController)FindObjectOfType(typeof(InteractiveController));
+        gc = (GameController)FindObjectOfType(typeof(GameController));
 
         for (int i = 0; i < 20; i++)
         {
@@ -61,7 +63,7 @@ public class EnemyController : MonoBehaviour {
             enemyGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("Enemies/smallbotbase", typeof(Sprite)) as Sprite;
             enemyGO.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
-            Enemy e = new Enemy(1, 1, enemyGO, mc.Core);
+            Enemy e = new Enemy(1, 1, 10, enemyGO, mc.Core);
             _Enemies.Add(e);
 
             ic.assignTarget(e);
@@ -86,6 +88,10 @@ public class EnemyController : MonoBehaviour {
                 enemy.Update(_EnemySpeed);
             }
 
+            if(enemy.Health <= 0 && !enemy.Dead) {
+                gc.increaseMaterials(enemy.Material);
+                enemy.Dead = true;
+            }
         }
         
 	}

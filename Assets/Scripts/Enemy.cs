@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Enemy : IDisposable {
+public class Enemy {
 
     private GameObject _EnemyGO;
     private GameObject _Core;
 
     private int _Type;
     private int _Health;
+    private bool _Dead;
+    private int _Material;
 
-    public Enemy(int type, int health, GameObject enemy, GameObject core)
+    public Enemy(int type, int health, int material, GameObject enemy, GameObject core)
     {
         _Type = type;
         _Health = health;
         _EnemyGO = enemy;
         _Core = core;
-    }
-
-    public void Dispose() {
-
+        Dead = false;
+        _Material = material;
     }
 
     public int X {
@@ -32,9 +32,8 @@ public class Enemy : IDisposable {
     }
 
     public void Update(float Speed) {
-        if (_Health == 0) {
+        if (_Health <= 0) {
             _EnemyGO.SetActive(false);
-            this.Dispose();
         } else {
             _EnemyGO.transform.position = Vector3.MoveTowards(_EnemyGO.transform.position, _Core.transform.position, Speed * Time.deltaTime);
         }
@@ -48,5 +47,25 @@ public class Enemy : IDisposable {
     public GameObject EnemyGO {
         get { return _EnemyGO; }
         set { _EnemyGO = value; }
+    }
+
+    public bool Dead {
+        get {
+            return _Dead;
+        }
+
+        set {
+            _Dead = value;
+        }
+    }
+
+    public int Material {
+        get {
+            return _Material;
+        }
+
+        set {
+            _Material = value;
+        }
     }
 }
