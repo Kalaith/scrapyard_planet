@@ -77,13 +77,13 @@ public class EnemyController : MonoBehaviour {
             if (tile != null) {
 
                 if (tile.Cost == 9) {
-                    enemy.MoveEnemies(_EnemySpeed*-2);
+                    enemy.Update(_EnemySpeed*-2);
                 } else {
-                    enemy.MoveEnemies(_EnemySpeed);
+                    enemy.Update(_EnemySpeed);
                 }
             } else {
 
-                enemy.MoveEnemies(_EnemySpeed);
+                enemy.Update(_EnemySpeed);
             }
 
         }

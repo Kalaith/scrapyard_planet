@@ -7,6 +7,7 @@ public class InteractiveController : MonoBehaviour {
     List<GameObject> item_go_list;
     List<InteractiveItem> item_list;
     GameController gc;
+
     // Use this for initialization
     void Start () {
 
@@ -55,7 +56,7 @@ public class InteractiveController : MonoBehaviour {
 
     public void assignTarget(Enemy enemy) {
         foreach (Turret turret in _Turrets) {
-            turret.addTarget(enemy.EnemyGO);
+            turret.addTarget(enemy);
             Debug.Log("Turret Target X:"+enemy.X+" Y:"+enemy.Y);
         }
         Debug.Log("assignTarget called");
@@ -83,31 +84,41 @@ public class InteractiveController : MonoBehaviour {
         foreach (Turret turret in _Turrets) {
             
             if (turret.Status == InteractiveItem.InteractiveStatus.On) {
+                if (turret.BullPS <= 0) {
+                    Debug.Log("Turrent Firing");
+                    Enemy target = turret.CurrentTarget();
 
-                GameObject target = turret.CurrentTarget();
+                    if (target != null) {
 
-                if (target != null) {
+                        GameObject bulletGO = new GameObject(); ;
+                        bulletGO.name = "Bullet_" + target.ToString();
+                        Vector3 position = new Vector3(turret.TurrentGO.transform.position.x + 0.5f, turret.TurrentGO.transform.position.y + 0.5f, 0);
 
-                Debug.Log("Turrets");
+                        bulletGO.transform.position = turret.TurrentGO.transform.position;
+                        bulletGO.transform.SetParent(this.transform, true);
+                        bulletGO.AddComponent<SpriteRenderer>();
+                        bulletGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("placeBullet", typeof(Sprite)) as Sprite;
+                        bulletGO.GetComponent<SpriteRenderer>().sortingOrder = 3;
 
-                    GameObject bulletGO = new GameObject(); ;
-                    bulletGO.name = "Bullet_"+target.ToString();
-                    Vector3 position = new Vector3(turret.TurrentGO.transform.position.x + 0.5f, turret.TurrentGO.transform.position.y + 0.5f, 0);
-
-                    bulletGO.transform.position = turret.TurrentGO.transform.position;
-                    bulletGO.transform.SetParent(this.transform, true);
-                    bulletGO.AddComponent<SpriteRenderer>();
-                    bulletGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("placeBullet", typeof(Sprite)) as Sprite;
-                    bulletGO.GetComponent<SpriteRenderer>().sortingOrder = 3;
-
-                    _Bullets.Add(new Bullet(1, bulletGO, target));
+                        _Bullets.Add(new Bullet(1, bulletGO, target));
+                        turret.BullPS = 1000;
+                    }
                 }
             }
+            turret.BullPS -= 1;
+
         }
 
-        foreach(Bullet bullet in _Bullets) {
+        foreach (Bullet bullet in _Bullets) {
             bullet.Update();
-            Debug.Log("We have bullets");
+        }
+
+        foreach (Bullet bullet in _Bullets) {
+            if (bullet.TargetHit) {
+                _Bullets.Remove(bullet);
+                bullet.Dispose();
+                break;
+            }
         }
 
         // Temporary, when the power core is installed it starts usinbg power to try and turn on the ship.

@@ -5,8 +5,8 @@ using UnityEngine;
 public class Turret {
 
     private GameObject _TurrentGO;
-    private GameObject _CurrentTarget;
-    private List<GameObject> _EnemyTargets = new List<GameObject>();
+    private Enemy _CurrentTarget;
+    private List<Enemy> _EnemyTargets = new List<Enemy>();
 
     private InteractiveItem _Switch;
 
@@ -18,30 +18,40 @@ public class Turret {
     {
         _Switch = s;
         _Type = t;
-        _EnemyTargets = new List<GameObject>();
+        _EnemyTargets = new List<Enemy>();
         _Switch.Status = InteractiveItem.InteractiveStatus.On;
     }
 
     // Returns the current target of the turrent, or null if no current enemy to target
-    public GameObject CurrentTarget() {
+    public Enemy CurrentTarget() {
+        Debug.Log("Current Target Activiated");
+        if (_CurrentTarget != null && _CurrentTarget.Health <= 0) {
+            _CurrentTarget = null;
+            
+            Debug.Log("Current Target is dead.");
+        }
 
         if (_CurrentTarget == null) {
             if (EnemyTargets.Count > 0) {
                 _CurrentTarget = _EnemyTargets[0];
                 _EnemyTargets.RemoveAt(0);
+                Debug.Log("New Target Assigned.");
             } else {
                 _CurrentTarget = null;
             }
         }
+
+        
+
         return _CurrentTarget;
     }
 
-    public void addTarget(GameObject e) {
+    public void addTarget(Enemy e) {
         _EnemyTargets.Add(e);
     }
 
     // This might be to much, the add should be enough.
-    public List<GameObject> EnemyTargets {
+    public List<Enemy> EnemyTargets {
         get { return _EnemyTargets; }
         set { _EnemyTargets = value; }
     }
