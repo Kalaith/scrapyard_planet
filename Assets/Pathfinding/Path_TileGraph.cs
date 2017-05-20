@@ -21,7 +21,7 @@ public class Path_TileGraph {
                 Tile t = map.GetTileAt(x, y);
 
                 // 0 is unwalkable.
-                if (t.Cost > 0) {
+                if ( t != null && t.Cost > 0) {
                     Path_Node<Tile> n = new Path_Node<Tile>();
                     n.data = t;
                     nodes.Add(t, n);

@@ -32,7 +32,7 @@ public class Enemy {
     }
 
     public void Update(float Speed) {
-        Debug.Log("My Health: "+ _Health+" Statues"+_Dead);
+        //Debug.Log("My Health: "+ _Health+" Statues"+_Dead);
         if (_Health <= 0) {
             _EnemyGO.SetActive(false);
         } else {

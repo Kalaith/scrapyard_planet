@@ -7,6 +7,7 @@ public class MapController : MonoBehaviour {
     public static MapController Instance { get; protected set; }
     private Sprite floorSprite;
     private Sprite wallSprite;
+    private Sprite wallFloorSprite;
     public Sprite itemSwitchSprite;
 
     public Sprite grassSprite;
@@ -40,45 +41,20 @@ public class MapController : MonoBehaviour {
 
         itemController = (InteractiveController)FindObjectOfType(typeof(InteractiveController));
 
-        for (int x = 0; x < Map.Width; x++) {
-            for (int y = 0; y < Map.Height; y++) {
-                Tile tile_data = Map.GetTileAt(x, y);
-                GameObject tile_go = new GameObject();
+        Debug.Log("Creating Internal Map");
+        CreateInternalMap();
 
-                tile_go.name = "Tile_" + x + "_" + y;
-                tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 1);
-                tile_go.transform.SetParent(this.transform, true);
-                tile_go.AddComponent<SpriteRenderer>();
-                tile_data.RegisterTileTypeChangedCallback((tile) => { OnTileTypeChanged(tile, tile_go); });
-                 if (tile_data.Type == Tile.TileType.Floor) {
-                    int randomTile = Random.Range(5, 10);
-                    floorSprite = Resources.Load("InternalShip/metaltile"+randomTile, typeof(Sprite)) as Sprite;
-
-                    tile_go.GetComponent<SpriteRenderer>().sprite = floorSprite;
-                } else if (tile_data.Type == Tile.TileType.Wall) {
-                    int randomTile = Random.Range(1, 4);
-                    wallSprite = Resources.Load("InternalShip/metaltile" + randomTile, typeof(Sprite)) as Sprite;
-
-                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
-                  
-                }
-
-                tile_go.GetComponent<SpriteRenderer>().sortingOrder = 0;
-
-                if(tile_data.Item != null && itemController != null) {
-                    Debug.Log("We have an item to spawn a game object on this tile at X:"+x+"Y:"+y);
-                    itemController.addItem(tile_data.Item, x, y, Resources.Load("button_off", typeof(Sprite)) as Sprite);
-                }
-
-            }
-        }
-
-        startx = Map.Width+ExternalModifier;
+        Debug.Log("Creating External Map");
+        CreateExternalMap();
+    }
+	
+    private void CreateExternalMap() {
+        startx = Map.Width + ExternalModifier;
         Debug.Log("Enemy Map Spawning");
         // External Map, next to the players, on right hand side.
-        for (int x = 0+startx; x < ExternalMap.Width+startx; x++) {
+        for (int x = 0 + startx; x < ExternalMap.Width + startx; x++) {
             for (int y = 0; y < ExternalMap.Height; y++) {
-                Tile tile_data = ExternalMap.GetTileAt(x-startx, y);
+                Tile tile_data = ExternalMap.GetTileAt(x - startx, y);
                 GameObject tile_go = new GameObject();
 
                 tile_go.name = "ETile_" + x + "_" + y;
@@ -123,7 +99,146 @@ public class MapController : MonoBehaviour {
             }
         }
     }
-	
+
+    private void CreateInternalMap() {
+        for (int x = 0; x < Map.Width; x++) {
+            for (int y = 0; y < Map.Height; y++) {
+                Tile tile_data = Map.GetTileAt(x, y);
+                GameObject tile_go = new GameObject();
+
+                tile_go.name = "Tile_" + x + "_" + y;
+                tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 1);
+                tile_go.transform.SetParent(this.transform, true);
+                tile_go.AddComponent<SpriteRenderer>();
+                tile_data.RegisterTileTypeChangedCallback((tile) => { OnTileTypeChanged(tile, tile_go); });
+                if (tile_data.Type == Tile.TileType.Floor) {
+                    int randomTile = Random.Range(5, 10);
+                    floorSprite = Resources.Load("InternalShip/metaltile" + randomTile, typeof(Sprite)) as Sprite;
+
+                    tile_go.GetComponent<SpriteRenderer>().sprite = floorSprite;
+                } else if (tile_data.Type == Tile.TileType.Wall) {
+                    int randomTile = Random.Range(1, 4);
+                    wallSprite = Resources.Load("InternalShip/metaltile" + randomTile, typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+
+                } else if (tile_data.Type == Tile.TileType.CornerBL) {
+                    wallSprite = Resources.Load("InternalShip/walltile4", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.CornerBR) {
+                    wallSprite = Resources.Load("InternalShip/walltile4", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    tile_go.GetComponent<SpriteRenderer>().transform.localRotation = Quaternion.Euler(0, 0, 90);
+                    tile_go.transform.position = new Vector3(tile_data.X + 1, tile_data.Y, 1);
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.CornerTL) {
+                    wallSprite = Resources.Load("InternalShip/walltile4", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    tile_go.GetComponent<SpriteRenderer>().transform.localRotation = Quaternion.Euler(0, 0, -90);
+                    tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y + 1, 1);
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.CornerTR) {
+                    wallSprite = Resources.Load("InternalShip/walltile4", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    tile_go.GetComponent<SpriteRenderer>().transform.localRotation = Quaternion.Euler(0, 0, 180);
+                    tile_go.transform.position = new Vector3(tile_data.X+1, tile_data.Y+1, 1);
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.JoinerL) { 
+                    wallSprite = Resources.Load("InternalShip/walltile6", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.JoinerR) { // OUTSTANDING
+                    wallSprite = Resources.Load("InternalShip/walltile6", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.JoinerT) { // OUTSTANDING
+                    wallSprite = Resources.Load("InternalShip/walltile6", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    tile_go.GetComponent<SpriteRenderer>().transform.localRotation = Quaternion.Euler(0, 0, -90);
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.JoinerB) {
+                    wallSprite = Resources.Load("InternalShip/walltile6", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    tile_go.GetComponent<SpriteRenderer>().transform.localRotation = Quaternion.Euler(0, 0, 90);
+                    tile_go.transform.position = new Vector3(tile_data.X+1, tile_data.Y, 1);
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.HallwayLR) {
+                    wallSprite = Resources.Load("InternalShip/walltile5", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.HallwayTB) {
+                    wallSprite = Resources.Load("InternalShip/walltile5", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    tile_go.GetComponent<SpriteRenderer>().transform.localRotation = Quaternion.Euler(0, 0, 90);
+                    tile_go.transform.position = new Vector3(tile_data.X + 1, tile_data.Y, 1);
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.DamagedWallB) { // OUTSTANDING
+                    wallSprite = Resources.Load("InternalShip/walltiledamaged", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.DamagedWallT) { // OUTSTANDING
+                    wallSprite = Resources.Load("InternalShip/walltiledamaged", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.DamagedWallL) { // OUTSTANDING
+                    wallSprite = Resources.Load("InternalShip/walltiledamaged", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.DamagedWallR) { // OUTSTANDING
+                    wallSprite = Resources.Load("InternalShip/walltiledamaged", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.CrackWallB) { // OUTSTANDING
+                    wallSprite = Resources.Load("InternalShip/walltile2", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.CrackWallT) { // OUTSTANDING
+                    wallSprite = Resources.Load("InternalShip/walltile2", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.CrackWallL) { // OUTSTANDING
+                    wallSprite = Resources.Load("InternalShip/walltile2", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.CrackWallR) { // OUTSTANDING
+                    wallSprite = Resources.Load("InternalShip/walltile2", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.WallB) {
+                    wallSprite = Resources.Load("InternalShip/walltile1", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.WallT) {
+                    wallSprite = Resources.Load("InternalShip/walltile1", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    tile_go.GetComponent<SpriteRenderer>().transform.localRotation = Quaternion.Euler(0, 0, 180);
+                    tile_go.transform.position = new Vector3(tile_data.X+1, tile_data.Y+1, 1);
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.WallL) {
+                    wallSprite = Resources.Load("InternalShip/walltile1", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    tile_go.GetComponent<SpriteRenderer>().transform.localRotation = Quaternion.Euler(0, 0, -90);
+                    tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y+1, 1);
+                    CreateTileGO(tile_data);
+                } else if (tile_data.Type == Tile.TileType.WallR) {
+                    wallSprite = Resources.Load("InternalShip/walltile1", typeof(Sprite)) as Sprite;
+                    tile_go.GetComponent<SpriteRenderer>().sprite = wallSprite;
+                    tile_go.GetComponent<SpriteRenderer>().transform.localRotation = Quaternion.Euler(0, 0, 90);
+                    tile_go.transform.position = new Vector3(tile_data.X+1, tile_data.Y, 1);
+                    CreateTileGO(tile_data);
+                }
+
+                tile_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
+
+                if (tile_data.Item != null && itemController != null) {
+                    Debug.Log("We have an item to spawn a game object on this tile at X:" + x + "Y:" + y);
+                    itemController.addItem(tile_data.Item, x, y, Resources.Load("button_off", typeof(Sprite)) as Sprite);
+                }
+
+            }
+        }
+    }
+
 	// Update is called once per frame
 	void Update () {
 		
@@ -135,5 +250,17 @@ public class MapController : MonoBehaviour {
         } else {
             tile_go.GetComponent<SpriteRenderer>().sprite = null;
         }
+    }
+
+    private void CreateTileGO(Tile tile_data) {
+        // Create a floor object
+        GameObject wallFloor = new GameObject();
+        wallFloor.name = "FloorTile_" + tile_data.X + "_" + tile_data.Y;
+        wallFloor.transform.position = new Vector3(tile_data.X, tile_data.Y, 1);
+        wallFloor.transform.SetParent(this.transform, true);
+        wallFloor.AddComponent<SpriteRenderer>();
+        wallFloorSprite = Resources.Load("InternalShip/metaltile1", typeof(Sprite)) as Sprite;
+        wallFloor.GetComponent<SpriteRenderer>().sprite = wallFloorSprite;
+        wallFloor.GetComponent<SpriteRenderer>().sortingOrder = 0;
     }
 }

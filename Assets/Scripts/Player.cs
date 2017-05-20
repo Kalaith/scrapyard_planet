@@ -51,7 +51,7 @@ public class Player {
 
                 // pathAStar could not find a valid path.
                 if(pathAStar.Length() == 0) {
-                    Debug.Log("Path_AStar returned no path to destination");
+                    //Debug.Log("Path_AStar returned no path to destination");
                     pathAStar = null;
                     return;
                 }

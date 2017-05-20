@@ -144,8 +144,140 @@ public class Map {
                         tiles[x, y].Item = new InteractiveItem(tiles[x, y]);
                     }
 
+                    // INTERNAL WALLS
+                    // CornerBL
+                    if (split[x] == "D") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.CornerBL;
+                    }
 
-                }  
+                    // CornerBR
+                    if (split[x] == "E") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.CornerBR;
+                    }
+
+                    // CornerTL
+                    if (split[x] == "F") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.CornerTL;
+                    }
+
+                    // CornerTR
+                    if (split[x] == "G") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.CornerTR;
+                    }
+
+                    // Turrent
+                    if (split[x] == "H") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.JoinerL;
+                    }
+
+                    // Turrent
+                    if (split[x] == "I") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.JoinerR;
+                    }
+
+                    // Turrent
+                    if (split[x] == "J") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.JoinerT;
+                    }
+
+                    // JoinerB
+                    if (split[x] == "K") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.JoinerB;
+                    }
+
+                    // HallwayLR
+                    if (split[x] == "L") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.HallwayLR;
+                    }
+
+                    // HallwayTB
+                    if (split[x] == "M") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.HallwayTB;
+                    }
+
+                    // DamagedWallB
+                    if (split[x] == "N") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.DamagedWallB;
+                    }
+
+                    // DamagedWallT
+                    if (split[x] == "O") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.DamagedWallT;
+                    }
+
+                    // DamagedWallL
+                    if (split[x] == "P") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.DamagedWallL;
+                    }
+
+                    // DamagedWallR
+                    if (split[x] == "Q") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.DamagedWallR;
+                    }
+
+                    // CrackWallB
+                    if (split[x] == "R") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.CrackWallB;
+                    }
+
+                    // CrackWallT
+                    if (split[x] == "S") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.CrackWallT;
+                    }
+
+                    // CrackWallL
+                    if (split[x] == "T") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.CrackWallL;
+                    }
+
+                    // CrackWallR
+                    if (split[x] == "U") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.CrackWallR;
+                    }
+
+                    // WallB
+                    if (split[x] == "V") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.WallB;
+                    }
+
+                    // WallT
+                    if (split[x] == "W") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.WallT;
+                    }
+
+                    // WallL
+                    if (split[x] == "X") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.WallL;
+                    }
+
+                    // WallR
+                    if (split[x] == "Y") {
+                        tiles[x, y] = new Tile(this, x, y, 0);
+                        tiles[x, y].Type = Tile.TileType.WallR;
+                    }
+
+            }  
             }
         }
 

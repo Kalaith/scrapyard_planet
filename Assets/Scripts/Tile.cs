@@ -15,7 +15,41 @@ public class Tile {
     9 Turrent (Interactive Item)
     */
 
-    public enum TileType { Empty, Floor, Wall, Dirt, Grass, Roof, HasTurrent, ExternalWall, Core, Turrent };
+    public enum TileType {
+        Empty,
+        Floor,
+        Wall,
+        Dirt,
+        Grass,
+        Roof,
+        HasTurrent,
+        ExternalWall,
+        Core,
+        Turrent,
+        CornerBL = 'D',
+        CornerBR = 'E',
+        CornerTL = 'F',
+        CornerTR = 'G',
+        JoinerL = 'H',
+        JoinerR = 'I',
+        JoinerT = 'J',
+        JoinerB = 'K',
+        HallwayLR = 'L',
+        HallwayTB = 'M',
+        DamagedWallB = 'N',
+        DamagedWallT = 'O',
+        DamagedWallL = 'P',
+        DamagedWallR = 'Q',
+        CrackWallB = 'R',
+        CrackWallT = 'S',
+        CrackWallL = 'T',
+        CrackWallR = 'U',
+        WallB = 'V',
+        WallT = 'W',
+        WallL = 'X',
+        WallR = 'Y' };
+
+
 
     TileType type = TileType.Empty;
 
