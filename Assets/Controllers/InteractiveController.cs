@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class InteractiveController : MonoBehaviour {
 
+    private List<Turret> _Turrets;
+    private List<Bullet> _Bullets;
     List<GameObject> item_go_list;
     List<InteractiveItem> item_list;
     GameController gc;
@@ -64,8 +66,7 @@ public class InteractiveController : MonoBehaviour {
         }
     }
 
-    private List<Turret> _Turrets;
-    private List<Bullet> _Bullets;
+
     // Update is called once per frame
     void Update () {
 

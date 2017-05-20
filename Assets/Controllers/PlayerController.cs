@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour {
         // Add a SpriteRender and assign a sprite
         player_go.AddComponent<SpriteRenderer>();
         player_go.GetComponent<SpriteRenderer>().sprite = playerSprite;
-        player_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        player_go.GetComponent<SpriteRenderer>().sortingOrder = 10;
 
         
     }

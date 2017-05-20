@@ -18,6 +18,7 @@ public class MapController : MonoBehaviour {
 
     public int ExternalModifier = 10;
     public int startx = 0;
+    private List<InteractiveItem> items;
 
     public GameObject Core {
         get {
@@ -41,6 +42,7 @@ public class MapController : MonoBehaviour {
 
         itemController = (InteractiveController)FindObjectOfType(typeof(InteractiveController));
 
+        items = new List<InteractiveItem>();
         Debug.Log("Creating Internal Map");
         CreateInternalMap();
 
@@ -92,7 +94,9 @@ public class MapController : MonoBehaviour {
 
                 if (tile_data.Item != null && itemController != null) {
                     Debug.Log("We have a turrent to spawn on this tile at X:" + x + "Y:" + y);
-                    Turret turret = new Turret(tile_data.Item, "Cannon", 3);
+                    InteractiveItem item = items[0];
+                    items.Remove(item);
+                    Turret turret = new Turret(item, "Cannon", 3);
                     itemController.addTurret(turret, x, y, Resources.Load("ExternalTiles/gun", typeof(Sprite)) as Sprite);
                 }
 
@@ -232,7 +236,8 @@ public class MapController : MonoBehaviour {
 
                 if (tile_data.Item != null && itemController != null) {
                     Debug.Log("We have an item to spawn a game object on this tile at X:" + x + "Y:" + y);
-                    itemController.addItem(tile_data.Item, x, y, Resources.Load("button_off", typeof(Sprite)) as Sprite);
+                    items.Add(tile_data.Item);
+                    itemController.addItem(tile_data.Item, x, y, Resources.Load("switchbroken", typeof(Sprite)) as Sprite);
                 }
 
             }

@@ -7,17 +7,20 @@ public class KeyboardController : MonoBehaviour {
     GameController gc;
     PlayerController p;
 
-    public Sprite button_on;
-    public Sprite button_off;
+    private Sprite button_on;
+    private Sprite button_off;
 
     // Use this for initialization
     void Start () {
         gc = (GameController)FindObjectOfType(typeof(GameController));
         p = (PlayerController)FindObjectOfType(typeof(PlayerController));
-    }
-	
-	// Update is called once per frame
-	void Update () {
+
+        button_on = Resources.Load("switchon", typeof(Sprite)) as Sprite;
+        button_off = Resources.Load("switchoff", typeof(Sprite)) as Sprite;
+}
+
+// Update is called once per frame
+void Update () {
 		if(Input.GetKeyDown("r")) {
             if (p.Player.CurrTile.Item != null && p.Player.CurrTile.Item.needsRepair()) {
                 if (gc.Materials < p.Player.CurrTile.Item.RepairCost) {

@@ -1,5 +1,5 @@
 F W W W W W W W W W G
-X 2 2 2 2 2 2 2 2 2 Y
+X A 2 2 2 2 2 2 2 A Y
 X 2 2 2 2 2 2 2 2 2 Y
 X 2 2 F 2 W G 2 2 2 Y
 X 2 2 X 2 2 Y 2 2 2 Y
@@ -7,5 +7,5 @@ X 2 2 X 2 2 Y 2 2 2 Y
 X 2 2 D 2 V E 2 2 2 Y
 X 2 2 2 2 2 2 2 M 2 Y
 X 2 2 2 2 2 2 2 M 2 Y
-X 2 2 2 2 2 2 2 M A Y
+X A 2 2 2 2 2 2 M A Y
 D V V V V V V V K V E

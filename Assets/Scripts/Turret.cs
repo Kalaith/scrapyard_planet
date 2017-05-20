@@ -20,7 +20,6 @@ public class Turret {
         _Switch = iswitch;
         _Type = type;
         _EnemyTargets = new List<Enemy>();
-        _Switch.Status = InteractiveItem.InteractiveStatus.On;
         _Range = range;
     }
 
