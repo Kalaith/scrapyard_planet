@@ -30,8 +30,7 @@ public class UIController : MonoBehaviour {
             coreValue.text = gc.Core.ToString();
 
             if (gc.GameOver) {
-                //Camera.main.rect = new Rect(0, 0, 1, 1);
-                Debug.Log("Game Over.");
+
                 gameOver.enabled = true;
                 StartCoroutine(TitleScreenDisplay());
             }
@@ -39,7 +38,7 @@ public class UIController : MonoBehaviour {
 	}
 
     IEnumerator TitleScreenDisplay() {
-        Debug.Log("Going to wait 5 seconds then show the title screen.");
+
         yield return new WaitForSeconds(5);
         SceneManager.LoadScene("TitleScreen");
     }

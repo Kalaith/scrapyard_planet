@@ -24,7 +24,7 @@ public class Enemy {
         Dead = false;
         _Material = material;
 
-        _EnemyCoreDamage = 10;
+        _EnemyCoreDamage = 1;
     }
 
     public int X {

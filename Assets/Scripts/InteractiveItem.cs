@@ -87,7 +87,7 @@ public class InteractiveItem {
     // Currently we dont need to init any variables since its assumed every part of the ship is not working
     public InteractiveItem(Tile tile, double operational = 50, double reserved = 10) {
         this.tile = tile;
-        repairCost = 10;
+        repairCost = 5;
 
         // Assign these from the constructor
         Operational_power_usage = operational;
@@ -100,7 +100,7 @@ public class InteractiveItem {
 
         // Use the deltaTime to increase the repairProgress to 100%
         if (RepairProgress < 100) {
-            RepairProgress += (float)RepairCost;
+            RepairProgress += (float)RepairCost*2;
         }
 
         // If the repair has reached 100% turn the module on by default.
