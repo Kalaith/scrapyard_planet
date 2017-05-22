@@ -12,6 +12,8 @@ public class Enemy {
     private int _Health;
     private bool _Dead;
     private int _Material;
+    private int _EnemyCoreDamage;
+    private int _EnemyAttackSpeed;
 
     public Enemy(int type, int health, int material, GameObject enemy, GameObject core)
     {
@@ -21,6 +23,8 @@ public class Enemy {
         _Core = core;
         Dead = false;
         _Material = material;
+
+        _EnemyCoreDamage = 10;
     }
 
     public int X {
@@ -38,6 +42,7 @@ public class Enemy {
         } else {
             _EnemyGO.transform.position = Vector3.MoveTowards(_EnemyGO.transform.position, _Core.transform.position, Speed * Time.deltaTime);
         }
+
     }
 
     public int Health {
@@ -67,6 +72,26 @@ public class Enemy {
 
         set {
             _Material = value;
+        }
+    }
+
+    public int EnemyCoreDamage {
+        get {
+            return _EnemyCoreDamage;
+        }
+
+        set {
+            _EnemyCoreDamage = value;
+        }
+    }
+
+    public int EnemyAttackSpeed {
+        get {
+            return _EnemyAttackSpeed;
+        }
+
+        set {
+            _EnemyAttackSpeed = value;
         }
     }
 }

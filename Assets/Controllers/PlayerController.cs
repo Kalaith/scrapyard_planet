@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour {
     Player player;
     GameObject player_go;
     MapController mc;
-
+    GameController gc;
     public Player Player {
         get {
             return player;
@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         mc = (MapController)FindObjectOfType(typeof(MapController));
-
+        gc = (GameController)FindObjectOfType(typeof(GameController));
         // Create a new player
         player = new Player(2f, mc.Map, mc.Map.GetTileAt(2, 2));
         
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (player != null) {
+        if (player != null && gc != null && !gc.GameOver) {
             player.Update_HandleMovement(Time.deltaTime);
             player_go.transform.position = new Vector3(Player.X, Player.Y, 0);
             Camera.main.transform.position = new Vector3(Player.X, Player.Y, Camera.main.transform.position.z);

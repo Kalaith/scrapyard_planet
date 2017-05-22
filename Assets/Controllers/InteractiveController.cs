@@ -69,68 +69,70 @@ public class InteractiveController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
-        if (_Bullets == null) {
-            _Bullets = new List<Bullet>();
-        }
-        
-        // Instead of setting the power usage back and forth, every update just query every item for its current power usage.
-        gc.ResetPowerUsage();
-		foreach(InteractiveItem item in item_list) {
-            if (item.Status == InteractiveItem.InteractiveStatus.On) {
-                gc.increasePowerUsage(item.Operational_power_usage, item.Reserved_power_usage);
-            } else if (item.Status == InteractiveItem.InteractiveStatus.Off) {
-                gc.increasePowerUsage(0, item.Reserved_power_usage);
+        // Stop running if its game over.
+        if (gc != null && !gc.GameOver) {
+            if (_Bullets == null) {
+                _Bullets = new List<Bullet>();
             }
-        }
 
-        foreach (Turret turret in _Turrets) {
-            
-            if (turret.Status == InteractiveItem.InteractiveStatus.On) {
-                // We want to find all enemies that are in range of the turrent 
-                turret.EnemyTargets = ec.InRange(turret.TurrentGO.transform.position, turret.Range);
-                if (turret.BullPS <= 0) {
-                    //Debug.Log("Turrent Firing");
-                    Enemy target = turret.CurrentTarget();
-
-                    if (target != null && !target.Dead) {
-
-                        GameObject bulletGO = new GameObject(); ;
-                        bulletGO.name = "Bullet_" + target.ToString();
-                        Vector3 position = new Vector3(turret.TurrentGO.transform.position.x + 0.5f, turret.TurrentGO.transform.position.y + 0.5f, 0);
-
-                        bulletGO.transform.position = turret.TurrentGO.transform.position;
-                        bulletGO.transform.SetParent(this.transform, true);
-                        bulletGO.AddComponent<SpriteRenderer>();
-                        bulletGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("placeBullet", typeof(Sprite)) as Sprite;
-                        bulletGO.GetComponent<SpriteRenderer>().sortingOrder = 3;
-
-                        bulletGO.AddComponent<CircleCollider2D>();
-                        bulletGO.GetComponent<CircleCollider2D>().radius = 0.2f;
-
-                        _Bullets.Add(new Bullet(2, bulletGO, target));
-                        turret.BullPS = 200;
-                    }
+            // Instead of setting the power usage back and forth, every update just query every item for its current power usage.
+            gc.ResetPowerUsage();
+            foreach (InteractiveItem item in item_list) {
+                if (item.Status == InteractiveItem.InteractiveStatus.On) {
+                    gc.increasePowerUsage(item.Operational_power_usage, item.Reserved_power_usage);
+                } else if (item.Status == InteractiveItem.InteractiveStatus.Off) {
+                    gc.increasePowerUsage(0, item.Reserved_power_usage);
                 }
             }
-            turret.BullPS -= 1;
 
-        }
+            foreach (Turret turret in _Turrets) {
 
-        foreach (Bullet bullet in _Bullets) {
-            bullet.Update();
-        }
+                if (turret.Status == InteractiveItem.InteractiveStatus.On) {
+                    // We want to find all enemies that are in range of the turrent 
+                    turret.EnemyTargets = ec.InRange(turret.TurrentGO.transform.position, turret.Range);
+                    if (turret.BullPS <= 0) {
+                        //Debug.Log("Turrent Firing");
+                        Enemy target = turret.CurrentTarget();
 
-        foreach (Bullet bullet in _Bullets) {
-            if (bullet.TargetHit) {
-                _Bullets.Remove(bullet);
-                bullet.Dispose();
-                break;
+                        if (target != null && !target.Dead) {
+
+                            GameObject bulletGO = new GameObject(); ;
+                            bulletGO.name = "Bullet_" + target.ToString();
+                            Vector3 position = new Vector3(turret.TurrentGO.transform.position.x + 0.5f, turret.TurrentGO.transform.position.y + 0.5f, 0);
+
+                            bulletGO.transform.position = turret.TurrentGO.transform.position;
+                            bulletGO.transform.SetParent(this.transform, true);
+                            bulletGO.AddComponent<SpriteRenderer>();
+                            bulletGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("placeBullet", typeof(Sprite)) as Sprite;
+                            bulletGO.GetComponent<SpriteRenderer>().sortingOrder = 3;
+
+                            bulletGO.AddComponent<CircleCollider2D>();
+                            bulletGO.GetComponent<CircleCollider2D>().radius = 0.2f;
+
+                            _Bullets.Add(new Bullet(2, bulletGO, target));
+                            turret.BullPS = 200;
+                        }
+                    }
+                }
+                turret.BullPS -= 1;
+
             }
-        }
 
+            foreach (Bullet bullet in _Bullets) {
+                bullet.Update();
+            }
+
+            foreach (Bullet bullet in _Bullets) {
+                if (bullet.TargetHit) {
+                    _Bullets.Remove(bullet);
+                    bullet.Dispose();
+                    break;
+                }
+            }        
         // Temporary, when the power core is installed it starts usinbg power to try and turn on the ship.
         // This should be a better object then hacking it onto this.
         gc.increasePowerUsage(0, 100);
+        }
+
     }
 }

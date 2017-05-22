@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour {
     private double operational_power_usage; // This is how much power they are using to turn on devices
     private double reserved_power_usage; // How much power they are using if everything is turned of
     private int materials; // How many materials has the player collected.
-    private double core_damage; // The nanomachinces deal damage to the core, when it takes enough damage, the core overloads and the ship explodes.
+    private double core; // The nanomachinces deal damage to the core, when it takes enough damage, the core overloads and the ship explodes.
     private bool game_over;
 
     // Use this for initialization
@@ -16,14 +16,14 @@ public class GameController : MonoBehaviour {
         operational_power_usage = 0;
         reserved_power_usage = 0;
         materials = 100;
-        core_damage = 0;
+        core = 100;
         game_over = false;
 
     }
 	
 	// Update is called once per frame
 	void Update () {
-		if(core_damage > 100) {
+		if(core == 0) {
             game_over = true;
         }
 
@@ -36,7 +36,10 @@ public class GameController : MonoBehaviour {
     // deal damage to core, enemies should call this
     public void damageCore(double damage) {
         if (damage > 0) {
-            core_damage += damage;
+            core -= damage;
+        }
+        if(core < 0) {
+            core = 0;
         }
     }
 
@@ -75,6 +78,10 @@ public class GameController : MonoBehaviour {
 
     public double ReservedPowerUsage {
         get { return reserved_power_usage; }
+    }
+
+    public double Core {
+        get { return core; }
     }
 
 

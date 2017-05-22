@@ -82,7 +82,13 @@ public class EnemyController : MonoBehaviour {
             if (tile != null) {
 
                 if (tile.Cost == 9) {
-                    enemy.Update(_EnemySpeed*-2);
+                    // Are we on a tile that is part of the ship? deal damage
+                    if (enemy.EnemyAttackSpeed <= 0) {
+                        gc.damageCore(enemy.EnemyCoreDamage);
+                        enemy.EnemyAttackSpeed = 200;
+                    }
+                    enemy.EnemyAttackSpeed--;
+                    enemy.Update(_EnemySpeed * -2);
                 } else {
                     enemy.Update(_EnemySpeed);
                 }
@@ -91,12 +97,12 @@ public class EnemyController : MonoBehaviour {
                 enemy.Update(_EnemySpeed);
             }
 
-            if(enemy.Health <= 0 && !enemy.Dead) {
+            if (enemy.Health <= 0 && !enemy.Dead) {
                 gc.increaseMaterials(enemy.Material);
                 enemy.Dead = true;
             }
+
         }
-        
 	}
 
     public List<Enemy> InRange(Vector3 position, int range) {
