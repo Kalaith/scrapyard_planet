@@ -24,12 +24,13 @@ public class EnemyController : MonoBehaviour {
         ic = (InteractiveController)FindObjectOfType(typeof(InteractiveController));
         gc = (GameController)FindObjectOfType(typeof(GameController));
 
+        int direction = Random.Range(4, 1);
         for (int i = 0; i < 20; i++)
         {
             int x = 0;
             int y = 0;
 
-            int direction = Random.Range(4, 1);
+
             if(direction == 1 ) {
             // Spawn from the left side
                 x = Random.Range(mc.startx - 1, mc.startx);
