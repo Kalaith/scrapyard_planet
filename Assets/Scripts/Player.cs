@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Player {
 
+    public bool OnSwitch;
+
+
     public float X {
         get {
             return Mathf.Lerp(currTile.X, nextTile.X, movementPerc);
@@ -36,6 +39,12 @@ public class Player {
     }
 
     public void Update_HandleMovement(float deltaTime) {
+
+        if(currTile.Item != null) {
+            OnSwitch = true;
+        } else {
+            OnSwitch = false;
+        }
 
         if (currTile == DestTile) {
             pathAStar = null;

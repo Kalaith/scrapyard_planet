@@ -240,10 +240,12 @@ public class MapController : MonoBehaviour {
                 if (tile_data.Item != null && itemController != null && tile_data.Item.GetType() != typeof(Engine)) {
                     Debug.Log("We have an item to spawn a game object on this tile at X:" + x + "Y:" + y);
                     items.Add(tile_data.Item);
+                    tile_data.Item.Name = "Turret Switch";
                     itemController.addItem(tile_data.Item, x, y, Resources.Load("switchbroken", typeof(Sprite)) as Sprite);
                 }
                 if(tile_data.Item != null && tile_data.Item.GetType() == typeof(Engine)) {
                     engines.Add(tile_data.Item);
+                    tile_data.Item.Name = "Engine Switch";
                     itemController.addEngine(tile_data.Item, x, y, Resources.Load("switchbroken", typeof(Sprite)) as Sprite);
                 }
 

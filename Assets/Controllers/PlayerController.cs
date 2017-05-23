@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour {
     GameObject player_go;
     MapController mc;
     GameController gc;
+    UIController ui;
+
     public Player Player {
         get {
             return player;
@@ -24,6 +26,8 @@ public class PlayerController : MonoBehaviour {
     void Start () {
         mc = (MapController)FindObjectOfType(typeof(MapController));
         gc = (GameController)FindObjectOfType(typeof(GameController));
+        ui = (UIController)FindObjectOfType(typeof(UIController));
+
         // Create a new player
         player = new Player(2.5f, mc.Map, mc.Map.GetTileAt(2, 2));
         
@@ -45,6 +49,11 @@ public class PlayerController : MonoBehaviour {
             player.Update_HandleMovement(Time.deltaTime);
             player_go.transform.position = new Vector3(Player.X, Player.Y, 0);
             Camera.main.transform.position = new Vector3(Player.X, Player.Y, Camera.main.transform.position.z);
+        }
+        if(player.OnSwitch) {
+            ui.ShowToolTip(player.CurrTile.Item);
+        } else {
+            ui.HideToolTip();
         }
     }
 }

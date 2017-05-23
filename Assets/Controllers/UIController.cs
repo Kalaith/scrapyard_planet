@@ -17,6 +17,8 @@ public class UIController : MonoBehaviour {
     public Text Countdown;
     public Text Timer;
 
+    public Canvas _ToolTip;
+
     GameController gc;
 
     // Use this for initialization
@@ -28,6 +30,8 @@ public class UIController : MonoBehaviour {
         Countdown.enabled = false;
         Timer.enabled = false;
 
+        _ToolTip.enabled = false;
+        
     }
 
     // Update is called once per frame
@@ -54,6 +58,26 @@ public class UIController : MonoBehaviour {
             }
         }
 	}
+
+    // We want a item, because we want all key information from it.
+    public void ShowToolTip(InteractiveItem item) {
+
+        if (item != null) {
+            GameObject.Find("NameValue").GetComponent<Text>().text = item.Name;
+            GameObject.Find("StatusValue").GetComponent<Text>().text = item.Status.ToString();
+            GameObject.Find("RepairValue").GetComponent<Text>().text = item.RepairProgress.ToString() + " %";
+            GameObject.Find("OperationalValue").GetComponent<Text>().text = item.Operational_power_usage.ToString();
+            GameObject.Find("ReservedValue").GetComponent<Text>().text = item.Reserved_power_usage.ToString();
+
+            _ToolTip.enabled = true;
+        } else {
+            _ToolTip.enabled = false;
+        }
+    }
+
+    public void HideToolTip() {
+        _ToolTip.enabled = false;
+    }
 
     IEnumerator TitleScreenDisplay() {
 

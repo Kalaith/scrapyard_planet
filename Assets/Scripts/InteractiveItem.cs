@@ -5,6 +5,8 @@ using UnityEngine;
 // Class for options that can be placed on tiles and have some form of interaction.
 public class InteractiveItem {
 
+    public string Name;
+
     public enum InteractiveStatus { Damaged, On, Off, Disabled };
 
     // By default all items are damaged.
