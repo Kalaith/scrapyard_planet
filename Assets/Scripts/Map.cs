@@ -77,11 +77,15 @@ public class Map {
         string line;
         string[] split;
 
+        TextAsset textFile = (TextAsset)Resources.Load(filename, typeof(TextAsset));
+        System.IO.StringReader file = new System.IO.StringReader(textFile.text);
+
         // Read the file
-        System.IO.StreamReader file = new System.IO.StreamReader(filename);
+        //System.IO.StreamReader file = new System.IO.StreamReader(filename);
         // we reverse this, otherwise the map is upside down compared to the file.
         for (int y = height-1; y >= 0; y--) {
             if ((line = file.ReadLine()) != null) {
+
                 split = line.Split(' ');
                 for (int x = 0; x < width; x++) {
                     // Empty

@@ -12,8 +12,9 @@ public class Turret {
 
     private string _Type;
 
-    private int _BullPS;
+    private float _BullPS;
     private int _Range;
+    private float _BulletSpeed;
 
     public Turret(InteractiveItem iswitch, string type, int range)
     {
@@ -21,6 +22,7 @@ public class Turret {
         _Type = type;
         _EnemyTargets = new List<Enemy>();
         _Range = range;
+        _BullPS = 1;
     }
 
     // Returns the current target of the turrent, or null if no current enemy to target
@@ -60,7 +62,7 @@ public class Turret {
         get { return _Switch.Status; }
     }
 
-    public int BullPS {
+    public float BullPS {
         get { return _BullPS; }
         set { _BullPS = value; }
     }

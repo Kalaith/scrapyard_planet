@@ -38,8 +38,8 @@ public class MapController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         Instance = this;
-        Map = new Map("Assets/Levels/LEVEL_1.txt", 11, 11);
-        ExternalMap = new Map("Assets/Levels/LEVEL_ENEMY_1.txt", 30, 30);
+        Map = new Map("Levels/LEVEL_1", 11, 11);
+        ExternalMap = new Map("Levels/LEVEL_ENEMY_1", 30, 30);
 
         itemController = (InteractiveController)FindObjectOfType(typeof(InteractiveController));
 

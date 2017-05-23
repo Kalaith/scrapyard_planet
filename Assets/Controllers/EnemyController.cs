@@ -31,8 +31,11 @@ public class EnemyController : MonoBehaviour {
 
     }
 
-	// Update is called once per frame
-	void Update () {
+    private float max_frame = 0.2f;
+    private float current_frame = 0;
+
+    // Update is called once per frame
+    void Update () {
 
         // We do not want to spawn to many enemies, so limit spawning so only X amount of enemies based on power usage 
         if(_Enemies.Count < (gc.OperationalPowerUsage + gc.ReservedPowerUsage)/10) {
@@ -47,20 +50,23 @@ public class EnemyController : MonoBehaviour {
 
         foreach (Enemy enemy in _Enemies) {
             Tile tile = mc.ExternalMap.GetTileAt(enemy.X - mc.startx, enemy.Y);
+            if (tile != null && !enemy.Dead) {
 
-            if (tile != null) {
-
-                if (tile.Cost == 9 && !enemy.Dead) {
-                    // Are we on a tile that is part of the ship? deal damage unless we are dead.
-                    if (enemy.EnemyAttackSpeed <= 0) {
-                        gc.damageCore(enemy.EnemyCoreDamage);
-                        enemy.EnemyAttackSpeed = 200;
+        
+                    if (tile.Cost == 9 && !enemy.Dead) {
+                        // Are we on a tile that is part of the ship? deal damage unless we are dead.
+                        if (enemy.EnemyAttackSpeed <= 0) {
+                            if (current_frame > max_frame) {
+                                gc.damageCore(enemy.EnemyCoreDamage);
+                                current_frame = 0;
+                            }
+                            current_frame += Time.deltaTime;
+                        }
+                        enemy.Update(_EnemySpeed * -2);
+                    } else {
+                        enemy.Update(_EnemySpeed);
                     }
-                    enemy.EnemyAttackSpeed--;
-                    enemy.Update(_EnemySpeed * -2);
-                } else {
-                    enemy.Update(_EnemySpeed);
-                }
+               
             } else {
 
                 enemy.Update(_EnemySpeed);
@@ -72,6 +78,7 @@ public class EnemyController : MonoBehaviour {
             }
 
         }
+
 
         // Remove enemies that are dead, and no longer have a game object
         foreach (Enemy enemy in _Enemies) {

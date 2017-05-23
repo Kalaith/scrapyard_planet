@@ -26,14 +26,14 @@ public class Bullet : IDisposable {
 
     }
 
-    public void Update()
+    public void Update(float max_frame)
     {
         if (!_TargetHit) {
             Vector3 targetPosition = _Target.EnemyGO.transform.position;
             targetPosition.x = targetPosition.x + 0.5f;
             targetPosition.y = targetPosition.y + 0.5f;
 
-            _BulletGO.transform.position = Vector3.MoveTowards(_BulletGO.transform.position, targetPosition, _Speed * Time.deltaTime);
+            _BulletGO.transform.position = Vector3.MoveTowards(_BulletGO.transform.position, targetPosition, _Speed * max_frame);
 
             if (Mathf.FloorToInt(_BulletGO.transform.position.x) == Mathf.FloorToInt(targetPosition.x) && Mathf.FloorToInt(_BulletGO.transform.position.y) == Mathf.FloorToInt(targetPosition.y)) {
                 _Target.Health = _Target.Health - 1;

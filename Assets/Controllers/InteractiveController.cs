@@ -93,19 +93,27 @@ public class InteractiveController : MonoBehaviour {
     }
 
 
+    private float max_frame = 0.05f;
+    private float current_frame = 0;
+
     // Update is called once per frame
     void Update () {
         // Stop running if its game over.
-        if (gc != null && !gc.GameOver) {
-
+        if (gc != null && ec != null && !gc.GameOver) {
 
             gc.ResetPowerUsage();
 
             updateItems();
             updateEngines();
             updateTurrets();
-            updateBullets();
-                
+
+            if (current_frame > max_frame) {
+                updateBullets();
+
+                current_frame = 0;
+            }
+            current_frame += Time.deltaTime;
+
             // Temporary, when the power core is installed it starts using power to try and turn on the ship.
             // This should be a better object then hacking it onto this.
             gc.increasePowerUsage(0, 100);
@@ -123,8 +131,9 @@ public class InteractiveController : MonoBehaviour {
 
         // Update all bullets.
         foreach (Bullet bullet in _Bullets) {
-            bullet.Update();
+            bullet.Update(max_frame);
         }
+
 
         // go through each bullet and remove if it hit a target
         foreach (Bullet bullet in _Bullets) {
@@ -162,17 +171,21 @@ public class InteractiveController : MonoBehaviour {
                         bulletGO.GetComponent<CircleCollider2D>().radius = 0.2f;
 
                         _Bullets.Add(new Bullet(2, bulletGO, target));
-                        turret.BullPS = 100;
+
                     }
                 }
             }
-            turret.BullPS -= 1;
+            turret.BullPS -= Time.deltaTime;
 
         }
     }
 
     private void updateItems() {
         // Instead of setting the power usage back and forth, every update just query every item for its current power usage.
+
+        if (item_list == null) {
+            item_list = new List<InteractiveItem>();
+        }
 
         foreach (InteractiveItem item in item_list) {
             if (item.Status == InteractiveItem.InteractiveStatus.On) {
@@ -184,6 +197,10 @@ public class InteractiveController : MonoBehaviour {
     }
 
     private void updateEngines() {
+
+        if (engine_list == null) {
+            engine_list = new List<InteractiveItem>();
+        }
 
         // If all engines are turned on, start the countdown.
         int engineCount = 0;

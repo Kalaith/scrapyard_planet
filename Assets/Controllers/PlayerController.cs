@@ -45,15 +45,17 @@ public class PlayerController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (player != null && gc != null && !gc.GameOver) {
-            player.Update_HandleMovement(Time.deltaTime);
-            player_go.transform.position = new Vector3(Player.X, Player.Y, 0);
-            Camera.main.transform.position = new Vector3(Player.X, Player.Y, Camera.main.transform.position.z);
-        }
-        if(player.OnSwitch) {
-            ui.ShowToolTip(player.CurrTile.Item);
-        } else {
-            ui.HideToolTip();
+        if (ui != null && player != null && gc != null) {
+            if (!gc.GameOver) {
+                player.Update_HandleMovement(Time.deltaTime);
+                player_go.transform.position = new Vector3(Player.X, Player.Y, 0);
+                Camera.main.transform.position = new Vector3(Player.X, Player.Y, Camera.main.transform.position.z);
+            }
+            if (player.OnSwitch) {
+                ui.ShowToolTip(player.CurrTile.Item);
+            } else {
+                ui.HideToolTip();
+            }
         }
     }
 }

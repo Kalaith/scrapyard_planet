@@ -57,7 +57,7 @@ public class Enemy {
             current_frame = 0;
         }
         current_frame += Time.deltaTime;
-        Debug.Log("Current Frame: "+current_frame);
+
 
     }
 

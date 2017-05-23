@@ -50,9 +50,10 @@ public class UIController : MonoBehaviour {
             
             if (gc.GameOver && gc.GameWon) {
                 gameWon.enabled = true;
-
+                _ToolTip.enabled = false;
                 StartCoroutine(TitleScreenDisplay());
             } else if(gc.GameOver && !gc.GameWon) {
+                _ToolTip.enabled = false;
                 gameOver.enabled = true;
                 StartCoroutine(TitleScreenDisplay());
             }
