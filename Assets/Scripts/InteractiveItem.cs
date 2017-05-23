@@ -87,7 +87,7 @@ public class InteractiveItem {
     }
 
     // Currently we dont need to init any variables since its assumed every part of the ship is not working
-    public InteractiveItem(Tile tile, double operational = 150, double reserved = 25, int repaircost = 5) {
+    public InteractiveItem(Tile tile, double operational = 100, double reserved = 25, int repaircost = 5) {
         this.tile = tile;
         repairCost = repaircost;
 

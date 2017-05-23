@@ -14,6 +14,10 @@ public class Enemy {
     private int _Material;
     private int _EnemyCoreDamage;
     private int _EnemyAttackSpeed;
+    private int explode = 1;
+    private int max_explode = 7;
+    private float max_frame = 0.05f;
+    private float current_frame = 0;
 
     public Enemy(int type, int health, int material, GameObject enemy, GameObject core)
     {
@@ -32,16 +36,28 @@ public class Enemy {
     }
 
     public int Y {
-        get { return Mathf.FloorToInt(_EnemyGO.transform.position.y + 0.5f); }
+        get { return Mathf.FloorToInt(_EnemyGO.transform.position.y + 0.5f); } 
     }
 
     public void Update(float Speed) {
-        //Debug.Log("My Health: "+ _Health+" Statues"+_Dead);
-        if (_Health <= 0) {
-            _EnemyGO.SetActive(false);
-        } else {
-            _EnemyGO.transform.position = Vector3.MoveTowards(_EnemyGO.transform.position, _Core.transform.position, Speed * Time.deltaTime);
+        if (current_frame > max_frame) {
+            //Debug.Log("My Health: "+ _Health+" Statues"+_Dead);
+            if (_Health <= 0) {
+                if(_EnemyGO.activeSelf) {
+                    max_frame = 0.2f;
+                    _EnemyGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("Enemies/boom" + explode, typeof(Sprite)) as Sprite;
+                    explode++;
+                    if (explode == max_explode) {
+                        _EnemyGO.SetActive(false);
+                    }
+                }
+            } else {
+                _EnemyGO.transform.position = Vector3.MoveTowards(_EnemyGO.transform.position, _Core.transform.position, Speed * max_frame);
+            }
+            current_frame = 0;
         }
+        current_frame += Time.deltaTime;
+        Debug.Log("Current Frame: "+current_frame);
 
     }
 

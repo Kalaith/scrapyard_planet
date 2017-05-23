@@ -34,13 +34,16 @@ public class EnemyController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(_EnemySpawnTick <= 0) {
-            SpawnEnemy();
-            _EnemySpawnRate = _DefaultSpawnRate - Mathf.Sqrt(((float)gc.OperationalPowerUsage + (float)gc.ReservedPowerUsage))*5;
+        // We do not want to spawn to many enemies, so limit spawning so only X amount of enemies based on power usage 
+        if(_Enemies.Count < (gc.OperationalPowerUsage + gc.ReservedPowerUsage)/10) {
+            if (_EnemySpawnTick <= 0) {
+                SpawnEnemy();
+                _EnemySpawnRate = _DefaultSpawnRate - Mathf.Sqrt(((float)gc.OperationalPowerUsage + (float)gc.ReservedPowerUsage)) * 5;
 
-            _EnemySpawnTick = _EnemySpawnRate;
+                _EnemySpawnTick = _EnemySpawnRate;
+            }
+            _EnemySpawnTick--;
         }
-        _EnemySpawnTick--;
 
         foreach (Enemy enemy in _Enemies) {
             Tile tile = mc.ExternalMap.GetTileAt(enemy.X - mc.startx, enemy.Y);
@@ -69,7 +72,16 @@ public class EnemyController : MonoBehaviour {
             }
 
         }
-	}
+
+        // Remove enemies that are dead, and no longer have a game object
+        foreach (Enemy enemy in _Enemies) {
+            if(enemy.Dead && !enemy.EnemyGO.activeSelf) {
+                _Enemies.Remove(enemy);
+                break;
+            }
+        }
+
+        }
 
     public List<Enemy> InRange(Vector3 position, int range) {
         List<Enemy> inRange = new List<Enemy>();
