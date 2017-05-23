@@ -19,6 +19,7 @@ public class MapController : MonoBehaviour {
     public int ExternalModifier = 10;
     public int startx = 0;
     private List<InteractiveItem> items;
+    private List<InteractiveItem> engines;
 
     public GameObject Core {
         get {
@@ -38,11 +39,13 @@ public class MapController : MonoBehaviour {
     void Start () {
         Instance = this;
         Map = new Map("Assets/Levels/LEVEL_1.txt", 11, 11);
-        ExternalMap = new Map("Assets/Levels/LEVEL_ENEMY_1.txt", 20, 20);
+        ExternalMap = new Map("Assets/Levels/LEVEL_ENEMY_1.txt", 30, 30);
 
         itemController = (InteractiveController)FindObjectOfType(typeof(InteractiveController));
 
         items = new List<InteractiveItem>();
+        engines = new List<InteractiveItem>();
+
         Debug.Log("Creating Internal Map");
         CreateInternalMap();
 
@@ -234,10 +237,14 @@ public class MapController : MonoBehaviour {
 
                 tile_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
-                if (tile_data.Item != null && itemController != null) {
+                if (tile_data.Item != null && itemController != null && tile_data.Item.GetType() != typeof(Engine)) {
                     Debug.Log("We have an item to spawn a game object on this tile at X:" + x + "Y:" + y);
                     items.Add(tile_data.Item);
                     itemController.addItem(tile_data.Item, x, y, Resources.Load("switchbroken", typeof(Sprite)) as Sprite);
+                }
+                if(tile_data.Item != null && tile_data.Item.GetType() == typeof(Engine)) {
+                    engines.Add(tile_data.Item);
+                    itemController.addEngine(tile_data.Item, x, y, Resources.Load("switchbroken", typeof(Sprite)) as Sprite);
                 }
 
             }

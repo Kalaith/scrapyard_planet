@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour {
         mc = (MapController)FindObjectOfType(typeof(MapController));
         gc = (GameController)FindObjectOfType(typeof(GameController));
         // Create a new player
-        player = new Player(2f, mc.Map, mc.Map.GetTileAt(2, 2));
+        player = new Player(2.5f, mc.Map, mc.Map.GetTileAt(2, 2));
         
         // Instaiate a game object for the player
         player_go = new GameObject();

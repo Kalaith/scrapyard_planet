@@ -5,30 +5,62 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
+    
+    public float TimeForEnginesToIgnite; // How long does it take for the engines to be ready for takeoff.
+    public int Materials; // How many materials has the player collected.
+    public double Core; // The nanomachinces deal damage to the core, when it takes enough damage, the core overloads and the ship explodes.
+
     private double operational_power_usage; // This is how much power they are using to turn on devices
     private double reserved_power_usage; // How much power they are using if everything is turned of
-    private int materials; // How many materials has the player collected.
-    private double core; // The nanomachinces deal damage to the core, when it takes enough damage, the core overloads and the ship explodes.
+
     private bool game_over;
+    private bool game_won;
+
 
     // Use this for initialization
     void Start () {
         operational_power_usage = 0;
         reserved_power_usage = 0;
-        materials = 100;
-        core = 100;
         game_over = false;
+        game_won = false;
+        _StartCountDown = false;
+        _TimeToLaunch = TimeForEnginesToIgnite;
 
     }
 	
 	// Update is called once per frame
 	void Update () {
-		if(core == 0) {
+		if(Core == 0) {
+            game_over = true;
+        }
+        if (StartCountDown == true) {
+            Countdown();
+        }
+
+    }
+
+    private float _TimeToLaunch;
+    private bool _StartCountDown;
+
+    public void Countdown() {
+
+        _TimeToLaunch -= Time.deltaTime;
+
+        var minutes = _TimeToLaunch / 60; //Divide the guiTime by sixty to get the minutes.
+        var seconds = _TimeToLaunch % 60;//Use the euclidean division for the seconds.
+        var fraction = (_TimeToLaunch * 100) % 100;
+
+        if(_TimeToLaunch <= 0) {
+            _TimeToLaunch = 0;
+            game_won = true;
             game_over = true;
         }
 
     }
 
+    public bool GameWon {
+        get { return game_won; }
+    }
     public bool GameOver {
         get { return game_over; }
     }
@@ -36,24 +68,18 @@ public class GameController : MonoBehaviour {
     // deal damage to core, enemies should call this
     public void damageCore(double damage) {
         if (damage > 0) {
-            core -= damage;
+            Core -= damage;
         }
-        if(core < 0) {
-            core = 0;
+        if(Core < 0) {
+            Core = 0;
         }
     }
-
-    // How many materials on hand.
-    public int Materials {
-        get {return materials;}
-    }
-
 
     // When an enemie dies, this function should be called with how much the enemy was worth
     public void increaseMaterials(int mats) {
         // check to make sure its not negative.
         if (mats > 0) {
-            materials += mats;
+            Materials += mats;
         }
     }
 
@@ -61,7 +87,7 @@ public class GameController : MonoBehaviour {
     public void spendMaterials(int mats) {
         // check to make sure its not negative.
         if (mats > 0) {
-            materials -= mats;
+            Materials -= mats;
         }
     }
 
@@ -80,8 +106,20 @@ public class GameController : MonoBehaviour {
         get { return reserved_power_usage; }
     }
 
-    public double Core {
-        get { return core; }
+    public int TimeToLaunch {
+        get {
+            return Mathf.FloorToInt(_TimeToLaunch);
+        }
+    }
+
+    public bool StartCountDown {
+        get {
+            return _StartCountDown;
+        }
+
+        set {
+            _StartCountDown = value;
+        }
     }
 
 

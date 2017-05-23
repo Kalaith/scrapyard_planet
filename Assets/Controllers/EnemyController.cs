@@ -36,8 +36,8 @@ public class EnemyController : MonoBehaviour {
 
         if(_EnemySpawnTick <= 0) {
             SpawnEnemy();
-            _EnemySpawnRate = _DefaultSpawnRate-(gc.OperationalPowerUsage + gc.ReservedPowerUsage / 10);
-            Debug.Log("Enemy Spawn Rate: "+_EnemySpawnRate);
+            _EnemySpawnRate = _DefaultSpawnRate - Mathf.Sqrt(((float)gc.OperationalPowerUsage + (float)gc.ReservedPowerUsage))*5;
+
             _EnemySpawnTick = _EnemySpawnRate;
         }
         _EnemySpawnTick--;
@@ -94,7 +94,7 @@ public class EnemyController : MonoBehaviour {
 
         int x = 0;
         int y = 0;
-        Debug.Log("Enemies Spawning from direction: " + direction);
+               
         // Spawn enemies from bottom left corner
         if (direction == 1) {
             // Spawn from the left side
@@ -107,6 +107,7 @@ public class EnemyController : MonoBehaviour {
             }
         }
 
+
         // Spawn enemies from top left side
         if (direction == 2) {
             // Spawn from the left side
@@ -114,24 +115,26 @@ public class EnemyController : MonoBehaviour {
                 x = Random.Range(mc.startx - 1, mc.startx);
                 y = Random.Range(mc.ExternalMap.Height / 2, mc.ExternalMap.Height);
             } else {
-                y = Random.Range(0, -1);
-                x = Random.Range(mc.startx + (mc.ExternalMap.Width / 2), mc.startx + mc.ExternalMap.Width);
+                x = Random.Range(mc.startx, mc.startx+(mc.ExternalMap.Width/2));
+                y = Random.Range(mc.ExternalMap.Height, mc.ExternalMap.Height+1);
+
             }
         }
 
-        // Spawn enemies from bottom left side
+        // Spawn enemies from bottom right side
         if (direction == 3) {
             // Spawn from the left side
             if (Random.Range(1, 3) == 1) {
                 x = Random.Range(mc.startx + mc.ExternalMap.Width, mc.startx + mc.ExternalMap.Width + 1);
                 y = Random.Range(0, mc.ExternalMap.Height / 2);
             } else {
+                x = Random.Range(mc.startx + mc.ExternalMap.Width/2, mc.startx + mc.ExternalMap.Width);
                 y = Random.Range(0, -1);
-                x = Random.Range(mc.startx, mc.startx + mc.ExternalMap.Width / 2);
+
             }
         }
 
-        // Spawn enemies from top left side
+        // Spawn enemies from top right side
         if (direction == 4) {
             // Spawn from the left side
             if (Random.Range(1, 3) == 1) {
@@ -139,7 +142,7 @@ public class EnemyController : MonoBehaviour {
                 y = Random.Range(0 + (mc.ExternalMap.Height / 2), mc.ExternalMap.Height);
             } else {
                 x = Random.Range(mc.startx + (mc.ExternalMap.Width / 2), mc.startx + mc.ExternalMap.Width);
-                y = Random.Range(0, -1);
+                y = Random.Range(mc.ExternalMap.Height, mc.ExternalMap.Height + 1);
             }
         }
 

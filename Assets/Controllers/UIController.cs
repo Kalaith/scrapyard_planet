@@ -12,6 +12,10 @@ public class UIController : MonoBehaviour {
     public Text materialValue;
     public Text coreValue;
     public Image gameOver;
+    public Image gameWon;
+
+    public Text Countdown;
+    public Text Timer;
 
     GameController gc;
 
@@ -19,6 +23,11 @@ public class UIController : MonoBehaviour {
     void Start () {
 		gc = (GameController)FindObjectOfType(typeof(GameController));
         gameOver.enabled = false;
+        gameWon.enabled = false;
+
+        Countdown.enabled = false;
+        Timer.enabled = false;
+
     }
 
     // Update is called once per frame
@@ -29,8 +38,17 @@ public class UIController : MonoBehaviour {
             materialValue.text = gc.Materials.ToString();
             coreValue.text = gc.Core.ToString();
 
-            if (gc.GameOver) {
+            if(gc.StartCountDown) {
+                Countdown.enabled = true;
+                Timer.enabled = true;
+                Timer.text = gc.TimeToLaunch.ToString();
+            }
+            
+            if (gc.GameOver && gc.GameWon) {
+                gameWon.enabled = true;
 
+                StartCoroutine(TitleScreenDisplay());
+            } else if(gc.GameOver && !gc.GameWon) {
                 gameOver.enabled = true;
                 StartCoroutine(TitleScreenDisplay());
             }

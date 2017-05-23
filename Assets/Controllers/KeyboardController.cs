@@ -9,6 +9,7 @@ public class KeyboardController : MonoBehaviour {
 
     private Sprite button_on;
     private Sprite button_off;
+    string itemName = "";
 
     // Use this for initialization
     void Start () {
@@ -32,7 +33,13 @@ void Update () {
                 }
                 if(p.Player.CurrTile.Item.RepairProgress == 100) {
                     // if we have repaired the switch, update the game object switch at the location we have done the repairs.
-                    GameObject.Find("Item_" + p.Player.CurrTile.X + "_" + p.Player.CurrTile.Y).GetComponent<SpriteRenderer>().sprite = button_on;
+                    
+                    if (p.Player.CurrTile.Item.GetType() == typeof(Engine)) {
+                        itemName = "Engine_" + p.Player.CurrTile.X + "_" + p.Player.CurrTile.Y;
+                    } else {
+                        itemName = "Item_" + p.Player.CurrTile.X + "_" + p.Player.CurrTile.Y;
+                    }
+                    GameObject.Find(itemName).GetComponent<SpriteRenderer>().sprite = button_on;
                 }
                 
                 Debug.Log("Repairing item, perc complete: "+p.Player.CurrTile.Item.RepairProgress);
@@ -47,12 +54,24 @@ void Update () {
             if (p.Player.CurrTile.Item != null) {
                 if(p.Player.CurrTile.Item.Status==InteractiveItem.InteractiveStatus.On) {
                     p.Player.CurrTile.Item.turnOff();
-                    GameObject.Find("Item_" + p.Player.CurrTile.X + "_" + p.Player.CurrTile.Y).GetComponent<SpriteRenderer>().sprite = button_off;
+                    if (p.Player.CurrTile.Item.GetType() == typeof(Engine)) {
+                        itemName = "Engine_" + p.Player.CurrTile.X + "_" + p.Player.CurrTile.Y;
+                    } else {
+                        itemName = "Item_" + p.Player.CurrTile.X + "_" + p.Player.CurrTile.Y;
+                    }
+                    GameObject.Find(itemName).GetComponent<SpriteRenderer>().sprite = button_off;
                     Debug.Log("Switch Off.");
+                    gc.spendMaterials(10);
                 } else if (p.Player.CurrTile.Item.Status == InteractiveItem.InteractiveStatus.Off) {
                     p.Player.CurrTile.Item.turnOn();
-                    GameObject.Find("Item_" + p.Player.CurrTile.X + "_" + p.Player.CurrTile.Y).GetComponent<SpriteRenderer>().sprite = button_on;
+                    if (p.Player.CurrTile.Item.GetType() == typeof(Engine)) {
+                        itemName = "Engine_" + p.Player.CurrTile.X + "_" + p.Player.CurrTile.Y;
+                    } else {
+                        itemName = "Item_" + p.Player.CurrTile.X + "_" + p.Player.CurrTile.Y;
+                    }
+                    GameObject.Find(itemName).GetComponent<SpriteRenderer>().sprite = button_on;
                     Debug.Log("Switch On.");
+                    gc.spendMaterials(10);
                 } else if (p.Player.CurrTile.Item.Status == InteractiveItem.InteractiveStatus.Damaged) {
                     Debug.Log("Switch needs to be repaired.");
                 } else {

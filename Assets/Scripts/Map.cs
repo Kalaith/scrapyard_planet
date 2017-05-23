@@ -143,6 +143,12 @@ public class Map {
                         tiles[x, y].Type = Tile.TileType.Turrent;
                         tiles[x, y].Item = new InteractiveItem(tiles[x, y]);
                     }
+                    // Engine
+                    if (split[x] == "C") {
+                        tiles[x, y] = new Tile(this, x, y, 1);
+                        tiles[x, y].Type = Tile.TileType.Floor;
+                        tiles[x, y].Item = new Engine(tiles[x, y]);
+                    }
 
                     // INTERNAL WALLS
                     // CornerBL

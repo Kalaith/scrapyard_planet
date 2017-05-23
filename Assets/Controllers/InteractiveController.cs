@@ -8,6 +8,8 @@ public class InteractiveController : MonoBehaviour {
     private List<Bullet> _Bullets;
     List<GameObject> item_go_list;
     List<InteractiveItem> item_list;
+    List<GameObject> engine_go_list;
+    List<InteractiveItem> engine_list;
     GameController gc;
     EnemyController ec;
     // Use this for initialization
@@ -60,6 +62,30 @@ public class InteractiveController : MonoBehaviour {
 
     }
 
+    public void addEngine(InteractiveItem item, int x, int y, Sprite itemSprite) {
+
+        if (engine_list == null) {
+            engine_list = new List<InteractiveItem>();
+        }
+        if (engine_go_list == null) {
+            engine_go_list = new List<GameObject>();
+        }
+
+        engine_list.Add(item);
+
+        GameObject engine_go = new GameObject();
+
+        engine_go_list.Add(engine_go);
+
+        engine_go.name = "Engine_" + x + "_" + y;
+        engine_go.transform.position = new Vector3(x, y, 0);
+        engine_go.transform.SetParent(this.transform, true);
+        engine_go.AddComponent<SpriteRenderer>();
+        engine_go.GetComponent<SpriteRenderer>().sprite = itemSprite;
+        engine_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
+
+    }
+
     public void assignTarget(Enemy enemy) {
         foreach (Turret turret in _Turrets) {
             turret.addTarget(enemy);
@@ -71,68 +97,110 @@ public class InteractiveController : MonoBehaviour {
     void Update () {
         // Stop running if its game over.
         if (gc != null && !gc.GameOver) {
-            if (_Bullets == null) {
-                _Bullets = new List<Bullet>();
-            }
 
-            // Instead of setting the power usage back and forth, every update just query every item for its current power usage.
+
             gc.ResetPowerUsage();
-            foreach (InteractiveItem item in item_list) {
-                if (item.Status == InteractiveItem.InteractiveStatus.On) {
-                    gc.increasePowerUsage(item.Operational_power_usage, item.Reserved_power_usage);
-                } else if (item.Status == InteractiveItem.InteractiveStatus.Off) {
-                    gc.increasePowerUsage(0, item.Reserved_power_usage);
-                }
-            }
 
-            foreach (Turret turret in _Turrets) {
-
-                if (turret.Status == InteractiveItem.InteractiveStatus.On) {
-                    // We want to find all enemies that are in range of the turrent 
-                    turret.EnemyTargets = ec.InRange(turret.TurrentGO.transform.position, turret.Range);
-                    if (turret.BullPS <= 0) {
-                        //Debug.Log("Turrent Firing");
-                        Enemy target = turret.CurrentTarget();
-
-                        if (target != null && !target.Dead) {
-
-                            GameObject bulletGO = new GameObject(); ;
-                            bulletGO.name = "Bullet_" + target.ToString();
-                            Vector3 position = new Vector3(turret.TurrentGO.transform.position.x + 0.5f, turret.TurrentGO.transform.position.y + 0.5f, 0);
-
-                            bulletGO.transform.position = turret.TurrentGO.transform.position;
-                            bulletGO.transform.SetParent(this.transform, true);
-                            bulletGO.AddComponent<SpriteRenderer>();
-                            bulletGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("placeBullet", typeof(Sprite)) as Sprite;
-                            bulletGO.GetComponent<SpriteRenderer>().sortingOrder = 3;
-
-                            bulletGO.AddComponent<CircleCollider2D>();
-                            bulletGO.GetComponent<CircleCollider2D>().radius = 0.2f;
-
-                            _Bullets.Add(new Bullet(2, bulletGO, target));
-                            turret.BullPS = 200;
-                        }
-                    }
-                }
-                turret.BullPS -= 1;
-
-            }
-
-            foreach (Bullet bullet in _Bullets) {
-                bullet.Update();
-            }
-
-            foreach (Bullet bullet in _Bullets) {
-                if (bullet.TargetHit) {
-                    _Bullets.Remove(bullet);
-                    bullet.Dispose();
-                    break;
-                }
-            }        
-        // Temporary, when the power core is installed it starts usinbg power to try and turn on the ship.
-        // This should be a better object then hacking it onto this.
-        gc.increasePowerUsage(0, 100);
+            updateItems();
+            updateEngines();
+            updateTurrets();
+            updateBullets();
+                
+            // Temporary, when the power core is installed it starts using power to try and turn on the ship.
+            // This should be a better object then hacking it onto this.
+            gc.increasePowerUsage(0, 100);
         }
 
+
+
+    }
+
+    private void updateBullets() {
+        // Create a bullet list if it doesn't exist
+        if (_Bullets == null) {
+            _Bullets = new List<Bullet>();
+        }
+
+        // Update all bullets.
+        foreach (Bullet bullet in _Bullets) {
+            bullet.Update();
+        }
+
+        // go through each bullet and remove if it hit a target
+        foreach (Bullet bullet in _Bullets) {
+            if (bullet.TargetHit) {
+                _Bullets.Remove(bullet);
+                bullet.Dispose();
+                break;
+            }
+        }
+    }
+
+    private void updateTurrets() {
+        foreach (Turret turret in _Turrets) {
+
+            if (turret.Status == InteractiveItem.InteractiveStatus.On) {
+                // We want to find all enemies that are in range of the turrent 
+                turret.EnemyTargets = ec.InRange(turret.TurrentGO.transform.position, turret.Range);
+                if (turret.BullPS <= 0) {
+                    //Debug.Log("Turrent Firing");
+                    Enemy target = turret.CurrentTarget();
+
+                    if (target != null && !target.Dead) {
+
+                        GameObject bulletGO = new GameObject(); ;
+                        bulletGO.name = "Bullet_" + target.ToString();
+                        Vector3 position = new Vector3(turret.TurrentGO.transform.position.x + 0.5f, turret.TurrentGO.transform.position.y + 0.5f, 0);
+
+                        bulletGO.transform.position = turret.TurrentGO.transform.position;
+                        bulletGO.transform.SetParent(this.transform, true);
+                        bulletGO.AddComponent<SpriteRenderer>();
+                        bulletGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("placeBullet", typeof(Sprite)) as Sprite;
+                        bulletGO.GetComponent<SpriteRenderer>().sortingOrder = 3;
+
+                        bulletGO.AddComponent<CircleCollider2D>();
+                        bulletGO.GetComponent<CircleCollider2D>().radius = 0.2f;
+
+                        _Bullets.Add(new Bullet(2, bulletGO, target));
+                        turret.BullPS = 100;
+                    }
+                }
+            }
+            turret.BullPS -= 1;
+
+        }
+    }
+
+    private void updateItems() {
+        // Instead of setting the power usage back and forth, every update just query every item for its current power usage.
+
+        foreach (InteractiveItem item in item_list) {
+            if (item.Status == InteractiveItem.InteractiveStatus.On) {
+                gc.increasePowerUsage(item.Operational_power_usage, item.Reserved_power_usage);
+            } else if (item.Status == InteractiveItem.InteractiveStatus.Off) {
+                gc.increasePowerUsage(0, item.Reserved_power_usage);
+            }
+        }
+    }
+
+    private void updateEngines() {
+
+        // If all engines are turned on, start the countdown.
+        int engineCount = 0;
+        foreach (InteractiveItem item in engine_list) {
+            if (item.Status == InteractiveItem.InteractiveStatus.On) {
+                engineCount++;
+                gc.increasePowerUsage(item.Operational_power_usage, item.Reserved_power_usage);
+            } else if (item.Status == InteractiveItem.InteractiveStatus.Off) {
+                gc.increasePowerUsage(0, item.Reserved_power_usage);
+            }
+        }
+
+        // Start the coutndown if all engines are on, otherwise pause the countdown.
+        if (engineCount == engine_list.Count) {
+            gc.StartCountDown = true;
+        } else {
+            gc.StartCountDown = false;
+        }
     }
 }
