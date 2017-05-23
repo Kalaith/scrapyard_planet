@@ -145,13 +145,15 @@ public class InteractiveController : MonoBehaviour {
         }
     }
 
+    private float last_fired = 0;
+
     private void updateTurrets() {
         foreach (Turret turret in _Turrets) {
 
             if (turret.Status == InteractiveItem.InteractiveStatus.On) {
                 // We want to find all enemies that are in range of the turrent 
                 turret.EnemyTargets = ec.InRange(turret.TurrentGO.transform.position, turret.Range);
-                if (turret.BullPS <= 0) {
+                if (last_fired > turret.BullPS) {
                     //Debug.Log("Turrent Firing");
                     Enemy target = turret.CurrentTarget();
 
@@ -173,9 +175,11 @@ public class InteractiveController : MonoBehaviour {
                         _Bullets.Add(new Bullet(2, bulletGO, target));
 
                     }
+                    last_fired = 0;
                 }
+                last_fired += Time.deltaTime;
             }
-            turret.BullPS -= Time.deltaTime;
+            
 
         }
     }

@@ -22,7 +22,7 @@ public class Turret {
         _Type = type;
         _EnemyTargets = new List<Enemy>();
         _Range = range;
-        _BullPS = 1;
+        _BullPS = 1.7f;
     }
 
     // Returns the current target of the turrent, or null if no current enemy to target

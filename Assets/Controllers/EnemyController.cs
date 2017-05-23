@@ -31,22 +31,25 @@ public class EnemyController : MonoBehaviour {
 
     }
 
-    private float max_frame = 0.2f;
+    private float max_frame = 0.5f;
     private float current_frame = 0;
 
+    private float spawn_rate = 0.7f;
+    private float last_spawn;
     // Update is called once per frame
     void Update () {
 
         // We do not want to spawn to many enemies, so limit spawning so only X amount of enemies based on power usage 
-        if(_Enemies.Count < (gc.OperationalPowerUsage + gc.ReservedPowerUsage)/10) {
-            if (_EnemySpawnTick <= 0) {
-                SpawnEnemy();
-                _EnemySpawnRate = _DefaultSpawnRate - Mathf.Sqrt(((float)gc.OperationalPowerUsage + (float)gc.ReservedPowerUsage)) * 5;
+        if (last_spawn > spawn_rate) {
+            if (_Enemies.Count < (gc.OperationalPowerUsage + gc.ReservedPowerUsage) / 10) {
 
-                _EnemySpawnTick = _EnemySpawnRate;
+                    SpawnEnemy();
+                    _EnemySpawnRate = _DefaultSpawnRate - Mathf.Sqrt(((float)gc.OperationalPowerUsage + (float)gc.ReservedPowerUsage)) * 5;
+
             }
-            _EnemySpawnTick--;
+            last_spawn = 0;
         }
+        last_spawn += Time.deltaTime;
 
         foreach (Enemy enemy in _Enemies) {
             Tile tile = mc.ExternalMap.GetTileAt(enemy.X - mc.startx, enemy.Y);
@@ -55,13 +58,13 @@ public class EnemyController : MonoBehaviour {
         
                     if (tile.Cost == 9 && !enemy.Dead) {
                         // Are we on a tile that is part of the ship? deal damage unless we are dead.
-                        if (enemy.EnemyAttackSpeed <= 0) {
-                            if (current_frame > max_frame) {
-                                gc.damageCore(enemy.EnemyCoreDamage);
-                                current_frame = 0;
-                            }
-                            current_frame += Time.deltaTime;
+
+                        if (current_frame > max_frame) {
+                            gc.damageCore(enemy.EnemyCoreDamage);
+                            current_frame = 0;
                         }
+                        current_frame += Time.deltaTime;
+                        
                         enemy.Update(_EnemySpeed * -2);
                     } else {
                         enemy.Update(_EnemySpeed);
