@@ -163,7 +163,7 @@ public class InteractiveController : MonoBehaviour {
                         bulletGO.name = "Bullet_" + target.ToString();
                         Vector3 position = new Vector3(turret.TurrentGO.transform.position.x + 0.5f, turret.TurrentGO.transform.position.y + 0.5f, 0);
 
-                        bulletGO.transform.position = turret.TurrentGO.transform.position;
+                        bulletGO.transform.position = position;
                         bulletGO.transform.SetParent(this.transform, true);
                         bulletGO.AddComponent<SpriteRenderer>();
                         bulletGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("rocket_32px", typeof(Sprite)) as Sprite;

@@ -23,11 +23,6 @@ public class KeyboardController : MonoBehaviour {
 // Update is called once per frame
 void Update () {
 
-        if (Input.GetKeyDown("s")) {
-            gc.StartCountDown = false;
-        }
-
-
         if (Input.GetKeyDown("r")) {
             if (p.Player.CurrTile.Item != null && p.Player.CurrTile.Item.needsRepair()) {
                 if (gc.Materials < p.Player.CurrTile.Item.RepairCost) {

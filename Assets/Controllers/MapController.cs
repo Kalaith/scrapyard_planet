@@ -99,7 +99,7 @@ public class MapController : MonoBehaviour {
                     //Debug.Log("We have a turrent to spawn on this tile at X:" + x + "Y:" + y);
                     InteractiveItem item = items[0];
                     items.Remove(item);
-                    Turret turret = new Turret(item, "Cannon", 15); // TEMP 3 to 15
+                    Turret turret = new Turret(item, "Cannon", 3); // TEMP 3 to 15
                     itemController.addTurret(turret, x, y, Resources.Load("ExternalTiles/gun", typeof(Sprite)) as Sprite);
                 }
 

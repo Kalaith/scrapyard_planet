@@ -38,7 +38,7 @@ public class Bullet : IDisposable {
 
             float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
 
-            _BulletGO.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            _BulletGO.transform.rotation = Quaternion.AngleAxis(angle + 180f, Vector3.forward);
 
             if (Mathf.FloorToInt(_BulletGO.transform.position.x) == Mathf.FloorToInt(targetPosition.x) && Mathf.FloorToInt(_BulletGO.transform.position.y) == Mathf.FloorToInt(targetPosition.y)) {
                 _Target.Health = _Target.Health - 1;

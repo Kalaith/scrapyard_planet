@@ -24,6 +24,7 @@ public class Enemy {
         _Type = type;
         _Health = health;
         _EnemyGO = enemy;
+
         _Core = core;
         Dead = false;
         _Material = material;
@@ -53,6 +54,7 @@ public class Enemy {
                 }
             } else {
                 _EnemyGO.transform.position = Vector3.MoveTowards(_EnemyGO.transform.position, _Core.transform.position, Speed * max_frame);
+
             }
             current_frame = 0;
         }
@@ -110,4 +112,5 @@ public class Enemy {
             _EnemyAttackSpeed = value;
         }
     }
+
 }
