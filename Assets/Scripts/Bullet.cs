@@ -30,8 +30,8 @@ public class Bullet : IDisposable {
     {
         if (!_TargetHit) {
             Vector3 targetPosition = _Target.EnemyGO.transform.position;
-            targetPosition.x = targetPosition.x + 0.5f;
-            targetPosition.y = targetPosition.y + 0.5f;
+            targetPosition.x += 0.5f;
+            targetPosition.y += 0.5f;
 
             _BulletGO.transform.position = Vector3.MoveTowards(_BulletGO.transform.position, targetPosition, _Speed * max_frame);
             Vector3 moveDirection = _BulletGO.transform.position - targetPosition;

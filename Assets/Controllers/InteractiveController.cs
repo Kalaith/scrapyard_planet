@@ -45,7 +45,7 @@ public class InteractiveController : MonoBehaviour {
         turret_go_canon.transform.SetParent(turret_go.transform, true);
         turret_go_canon.AddComponent<SpriteRenderer>();
         turret_go_canon.GetComponent<SpriteRenderer>().sprite = Resources.Load("ExternalTiles/turrettop1", typeof(Sprite)) as Sprite;
-        turret_go_canon.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        turret_go_canon.GetComponent<SpriteRenderer>().sortingOrder = 2;
         turret_go_canon.AddComponent<CircleCollider2D>();
         turret_go_canon.GetComponent<CircleCollider2D>().radius = 3f;
         turret_go_canon.SetActive(false);
@@ -165,7 +165,6 @@ public class InteractiveController : MonoBehaviour {
 
             if (turret.Status == InteractiveItem.InteractiveStatus.On) {
                 turret.TurrentGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("ExternalTiles/turretbase1", typeof(Sprite)) as Sprite;
-                
                 turret.TurrentGOCanon.GetComponent<SpriteRenderer>().sprite = Resources.Load("ExternalTiles/turrettop2", typeof(Sprite)) as Sprite;
                 turret.TurrentGOCanon.SetActive(true);
 
@@ -205,8 +204,9 @@ public class InteractiveController : MonoBehaviour {
                 }
                 last_fired += Time.deltaTime;
             } else if(turret.Status == InteractiveItem.InteractiveStatus.Off) {
-            
+                turret.TurrentGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("ExternalTiles/turretbase1", typeof(Sprite)) as Sprite;
                 turret.TurrentGOCanon.GetComponent<SpriteRenderer>().sprite = Resources.Load("ExternalTiles/turrettop1", typeof(Sprite)) as Sprite;
+                //turret.TurrentGOCanon.GetComponent<SpriteRenderer>().sortingOrder = 3;
                 turret.TurrentGOCanon.SetActive(true);
             }
 

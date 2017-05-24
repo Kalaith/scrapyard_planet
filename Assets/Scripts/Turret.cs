@@ -13,6 +13,7 @@ public class Turret {
 
     private string _Type;
 
+    // Bullet Spawning Speed
     private float _BullPS;
     private int _Range;
     private float _BulletSpeed;
@@ -23,7 +24,7 @@ public class Turret {
         _Type = type;
         _EnemyTargets = new List<Enemy>();
         _Range = range;
-        _BullPS = 1.7f;
+        _BullPS = 2f;
     }
 
     // Returns the current target of the turrent, or null if no current enemy to target
