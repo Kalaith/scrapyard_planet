@@ -166,7 +166,7 @@ public class InteractiveController : MonoBehaviour {
                         bulletGO.transform.position = turret.TurrentGO.transform.position;
                         bulletGO.transform.SetParent(this.transform, true);
                         bulletGO.AddComponent<SpriteRenderer>();
-                        bulletGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("placeBullet", typeof(Sprite)) as Sprite;
+                        bulletGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("rocket_32px", typeof(Sprite)) as Sprite;
                         bulletGO.GetComponent<SpriteRenderer>().sortingOrder = 3;
 
                         bulletGO.AddComponent<CircleCollider2D>();

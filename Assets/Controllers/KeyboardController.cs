@@ -31,11 +31,11 @@ void Update () {
         if (Input.GetKeyDown("r")) {
             if (p.Player.CurrTile.Item != null && p.Player.CurrTile.Item.needsRepair()) {
                 if (gc.Materials < p.Player.CurrTile.Item.RepairCost) {
-                    Debug.Log("Not enough materials, materials remaining "+ gc.Materials);
+                    //Debug.Log("Not enough materials, materials remaining "+ gc.Materials);
                 } else {
                     gc.spendMaterials(p.Player.CurrTile.Item.RepairCost);
                     p.Player.CurrTile.Item.repairItem();
-                    Debug.Log("materials remaining " + gc.Materials);
+                    //Debug.Log("materials remaining " + gc.Materials);
                 }
                 if(p.Player.CurrTile.Item.RepairProgress == 100) {
                     // if we have repaired the switch, update the game object switch at the location we have done the repairs.
@@ -48,11 +48,11 @@ void Update () {
                     GameObject.Find(itemName).GetComponent<SpriteRenderer>().sprite = button_on;
                 }
                 
-                Debug.Log("Repairing item, perc complete: "+p.Player.CurrTile.Item.RepairProgress);
+                //Debug.Log("Repairing item, perc complete: "+p.Player.CurrTile.Item.RepairProgress);
             } else if(p.Player.CurrTile.Item != null && !p.Player.CurrTile.Item.needsRepair()) {
-                Debug.Log("Item is already repaired.");
+                //Debug.Log("Item is already repaired.");
             } else {
-                Debug.Log("No Item to repair.");
+                //Debug.Log("No Item to repair.");
             }
 
         }
@@ -66,7 +66,7 @@ void Update () {
                         itemName = "Item_" + p.Player.CurrTile.X + "_" + p.Player.CurrTile.Y;
                     }
                     GameObject.Find(itemName).GetComponent<SpriteRenderer>().sprite = button_off;
-                    Debug.Log("Switch Off.");
+                    //Debug.Log("Switch Off.");
                     gc.spendMaterials(10);
                 } else if (p.Player.CurrTile.Item.Status == InteractiveItem.InteractiveStatus.Off) {
                     p.Player.CurrTile.Item.turnOn();
@@ -76,12 +76,12 @@ void Update () {
                         itemName = "Item_" + p.Player.CurrTile.X + "_" + p.Player.CurrTile.Y;
                     }
                     GameObject.Find(itemName).GetComponent<SpriteRenderer>().sprite = button_on;
-                    Debug.Log("Switch On.");
+                    //Debug.Log("Switch On.");
                     gc.spendMaterials(10);
                 } else if (p.Player.CurrTile.Item.Status == InteractiveItem.InteractiveStatus.Damaged) {
-                    Debug.Log("Switch needs to be repaired.");
+                    //Debug.Log("Switch needs to be repaired.");
                 } else {
-                    Debug.Log("Switch is disabled.");
+                    //Debug.Log("Switch is disabled.");
                 }
             }
         }

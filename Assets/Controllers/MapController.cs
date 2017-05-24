@@ -46,16 +46,16 @@ public class MapController : MonoBehaviour {
         items = new List<InteractiveItem>();
         engines = new List<InteractiveItem>();
 
-        Debug.Log("Creating Internal Map");
+        //Debug.Log("Creating Internal Map");
         CreateInternalMap();
 
-        Debug.Log("Creating External Map");
+        //Debug.Log("Creating External Map");
         CreateExternalMap();
     }
 	
     private void CreateExternalMap() {
         startx = Map.Width + ExternalModifier;
-        Debug.Log("Enemy Map Spawning");
+        //Debug.Log("Enemy Map Spawning");
         // External Map, next to the players, on right hand side.
         for (int x = 0 + startx; x < ExternalMap.Width + startx; x++) {
             for (int y = 0; y < ExternalMap.Height; y++) {
@@ -96,10 +96,10 @@ public class MapController : MonoBehaviour {
                 tile_go.GetComponent<SpriteRenderer>().sortingOrder = 0;
 
                 if (tile_data.Item != null && itemController != null) {
-                    Debug.Log("We have a turrent to spawn on this tile at X:" + x + "Y:" + y);
+                    //Debug.Log("We have a turrent to spawn on this tile at X:" + x + "Y:" + y);
                     InteractiveItem item = items[0];
                     items.Remove(item);
-                    Turret turret = new Turret(item, "Cannon", 3);
+                    Turret turret = new Turret(item, "Cannon", 15); // TEMP 3 to 15
                     itemController.addTurret(turret, x, y, Resources.Load("ExternalTiles/gun", typeof(Sprite)) as Sprite);
                 }
 
@@ -238,7 +238,7 @@ public class MapController : MonoBehaviour {
                 tile_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
                 if (tile_data.Item != null && itemController != null && tile_data.Item.GetType() != typeof(Engine)) {
-                    Debug.Log("We have an item to spawn a game object on this tile at X:" + x + "Y:" + y);
+                    //Debug.Log("We have an item to spawn a game object on this tile at X:" + x + "Y:" + y);
                     items.Add(tile_data.Item);
                     tile_data.Item.Name = "Turret Switch";
                     itemController.addItem(tile_data.Item, x, y, Resources.Load("switchbroken", typeof(Sprite)) as Sprite);

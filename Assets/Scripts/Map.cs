@@ -39,7 +39,7 @@ public class Map {
         CreateMapFromFile(fileName, width, height);
         //CreateMap();
 
-        Debug.Log("World created with " + (width * height) + " tiles");
+        //Debug.Log("World created with " + (width * height) + " tiles");
 
     }
 
