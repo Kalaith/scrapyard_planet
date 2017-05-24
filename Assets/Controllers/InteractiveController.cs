@@ -28,16 +28,29 @@ public class InteractiveController : MonoBehaviour {
         _Turrets.Add(t);
 
         GameObject turret_go = new GameObject();
-        turret_go.name = "Item_" + x + "_" + y;
+        turret_go.name = "TurretBase_" + x + "_" + y;
         turret_go.transform.position = new Vector3(x, y, 0);
         turret_go.transform.SetParent(this.transform, true);
         turret_go.AddComponent<SpriteRenderer>();
         turret_go.GetComponent<SpriteRenderer>().sprite = turrentSprite;
         turret_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
         turret_go.AddComponent<CircleCollider2D>();
-        turret_go.GetComponent<CircleCollider2D>().radius = 3f;
+        turret_go.GetComponent<CircleCollider2D>().radius = 2f;
 
         t.TurrentGO = turret_go;
+
+        GameObject turret_go_canon = new GameObject();
+        turret_go_canon.name = "TurretCanon_" + x + "_" + y;
+        turret_go_canon.transform.position = new Vector3(x+0.5f, y+0.5f, 0);
+        turret_go_canon.transform.SetParent(turret_go.transform, true);
+        turret_go_canon.AddComponent<SpriteRenderer>();
+        turret_go_canon.GetComponent<SpriteRenderer>().sprite = Resources.Load("ExternalTiles/turrettop1", typeof(Sprite)) as Sprite;
+        turret_go_canon.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        turret_go_canon.AddComponent<CircleCollider2D>();
+        turret_go_canon.GetComponent<CircleCollider2D>().radius = 3f;
+        turret_go_canon.SetActive(false);
+
+        t.TurrentGOCanon = turret_go_canon;
     }
 
     public void addItem(InteractiveItem item, int x, int y, Sprite itemSprite) {
@@ -151,6 +164,12 @@ public class InteractiveController : MonoBehaviour {
         foreach (Turret turret in _Turrets) {
 
             if (turret.Status == InteractiveItem.InteractiveStatus.On) {
+                turret.TurrentGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("ExternalTiles/turretbase1", typeof(Sprite)) as Sprite;
+                
+                turret.TurrentGOCanon.GetComponent<SpriteRenderer>().sprite = Resources.Load("ExternalTiles/turrettop2", typeof(Sprite)) as Sprite;
+                turret.TurrentGOCanon.SetActive(true);
+
+
                 // We want to find all enemies that are in range of the turrent 
                 turret.EnemyTargets = ec.InRange(turret.TurrentGO.transform.position, turret.Range);
                 if (last_fired > turret.BullPS) {
@@ -158,6 +177,13 @@ public class InteractiveController : MonoBehaviour {
                     Enemy target = turret.CurrentTarget();
 
                     if (target != null && !target.Dead) {
+
+                        Vector3 moveDirection = turret.TurrentGO.transform.position - target.EnemyGO.transform.position;
+
+                        float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+
+                        turret.TurrentGOCanon.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
 
                         GameObject bulletGO = new GameObject(); ;
                         bulletGO.name = "Bullet_" + target.ToString();
@@ -178,8 +204,13 @@ public class InteractiveController : MonoBehaviour {
                     last_fired = 0;
                 }
                 last_fired += Time.deltaTime;
-            }
+            } else if(turret.Status == InteractiveItem.InteractiveStatus.Off) {
             
+                turret.TurrentGOCanon.GetComponent<SpriteRenderer>().sprite = Resources.Load("ExternalTiles/turrettop1", typeof(Sprite)) as Sprite;
+                turret.TurrentGOCanon.SetActive(true);
+            }
+
+
 
         }
     }

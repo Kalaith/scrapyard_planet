@@ -6,6 +6,7 @@ using System;
 public class Enemy {
 
     private GameObject _EnemyGO;
+    private GameObject _EnemyGOSprite;
     private GameObject _Core;
 
     private int _Type;
@@ -19,12 +20,12 @@ public class Enemy {
     private float max_frame = 0.05f;
     private float current_frame = 0;
 
-    public Enemy(int type, int health, int material, GameObject enemy, GameObject core)
+    public Enemy(int type, int health, int material, GameObject enemy, GameObject enemysprite, GameObject core)
     {
         _Type = type;
         _Health = health;
         _EnemyGO = enemy;
-
+        EnemyGOSprite = enemysprite;
         _Core = core;
         Dead = false;
         _Material = material;
@@ -44,16 +45,22 @@ public class Enemy {
         if (current_frame > max_frame) {
             //Debug.Log("My Health: "+ _Health+" Statues"+_Dead);
             if (_Health <= 0) {
-                if(_EnemyGO.activeSelf) {
+                if(_EnemyGOSprite.activeSelf) {
                     max_frame = 0.2f;
-                    _EnemyGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("Enemies/boom" + explode, typeof(Sprite)) as Sprite;
+                    EnemyGOSprite.GetComponent<SpriteRenderer>().sprite = Resources.Load("Enemies/boom" + explode, typeof(Sprite)) as Sprite;
                     explode++;
                     if (explode == max_explode) {
-                        _EnemyGO.SetActive(false);
+                        _EnemyGOSprite.SetActive(false);
                     }
                 }
             } else {
                 _EnemyGO.transform.position = Vector3.MoveTowards(_EnemyGO.transform.position, _Core.transform.position, Speed * max_frame);
+
+                Vector3 moveDirection = _EnemyGO.transform.position - _Core.transform.position;
+
+                float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+                _EnemyGOSprite.transform.rotation = Quaternion.AngleAxis(angle-90, Vector3.forward);
+
 
             }
             current_frame = 0;
@@ -113,4 +120,13 @@ public class Enemy {
         }
     }
 
+    public GameObject EnemyGOSprite {
+        get {
+            return _EnemyGOSprite;
+        }
+
+        set {
+            _EnemyGOSprite = value;
+        }
+    }
 }

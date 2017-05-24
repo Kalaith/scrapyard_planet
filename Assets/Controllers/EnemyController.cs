@@ -169,18 +169,27 @@ public class EnemyController : MonoBehaviour {
         }
 
         Vector3 position = new Vector3(x, y, 0);
-        GameObject enemyGO = new GameObject(); ;
+        GameObject enemyGO = new GameObject();
         enemyGO.name = "Enemy_" + x;
         enemyGO.transform.position = position;
         enemyGO.transform.SetParent(this.transform, true);
-        enemyGO.AddComponent<SpriteRenderer>();
-        enemyGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("Enemies/enemy2", typeof(Sprite)) as Sprite;
-        enemyGO.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        //enemyGO.AddComponent<SpriteRenderer>();
+        //enemyGO.GetComponent<SpriteRenderer>().sprite = Resources.Load("Enemies/enemy2", typeof(Sprite)) as Sprite;
+        //enemyGO.GetComponent<SpriteRenderer>().sortingOrder = 1;
         enemyGO.AddComponent<CircleCollider2D>();
         enemyGO.GetComponent<CircleCollider2D>().radius = 0.3f;
         enemyGO.GetComponent<CircleCollider2D>().isTrigger = true;
 
-        Enemy e = new Enemy(1, 1, 10, enemyGO, mc.Core);
+        GameObject enemyGOSprite = new GameObject();
+        enemyGOSprite.name = "EnemySprite_" + x;
+        enemyGOSprite.transform.position = new Vector3(position.x+0.5f, position.y + 0.5f, position.z);
+        enemyGOSprite.transform.SetParent(enemyGO.transform, true);
+        enemyGOSprite.AddComponent<SpriteRenderer>();
+        enemyGOSprite.GetComponent<SpriteRenderer>().sprite = Resources.Load("Enemies/enemy2", typeof(Sprite)) as Sprite;
+        enemyGOSprite.GetComponent<SpriteRenderer>().sortingOrder = 1;
+
+        Enemy e = new Enemy(1, 1, 10, enemyGO, enemyGOSprite, mc.Core);
+
         _Enemies.Add(e);
 
         ic.assignTarget(e);

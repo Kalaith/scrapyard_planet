@@ -5,6 +5,7 @@ using UnityEngine;
 public class Turret {
 
     private GameObject _TurrentGO;
+    private GameObject _TurrentGOCanon;
     private Enemy _CurrentTarget;
     private List<Enemy> _EnemyTargets = new List<Enemy>();
 
@@ -75,5 +76,15 @@ public class Turret {
     public GameObject TurrentGO {
         get { return _TurrentGO; }
         set { _TurrentGO = value; }
+    }
+
+    public GameObject TurrentGOCanon {
+        get {
+            return _TurrentGOCanon;
+        }
+
+        set {
+            _TurrentGOCanon = value;
+        }
     }
 }

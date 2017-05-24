@@ -100,7 +100,7 @@ public class MapController : MonoBehaviour {
                     InteractiveItem item = items[0];
                     items.Remove(item);
                     Turret turret = new Turret(item, "Cannon", 3); // TEMP 3 to 15
-                    itemController.addTurret(turret, x, y, Resources.Load("ExternalTiles/gun", typeof(Sprite)) as Sprite);
+                    itemController.addTurret(turret, x, y, Resources.Load("ExternalTiles/brokenturret", typeof(Sprite)) as Sprite);
                 }
 
             }
