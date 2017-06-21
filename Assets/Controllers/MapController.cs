@@ -4,20 +4,25 @@ using UnityEngine;
 
 public class MapController : MonoBehaviour {
 
+    // GEt an instance of the MapController
     public static MapController Instance { get; protected set; }
+    
+    // Temp Sprite Objects
     private Sprite floorSprite;
     private Sprite wallSprite;
     private Sprite wallFloorSprite;
-    public Sprite itemSwitchSprite;
+    private Sprite itemSwitchSprite;
+    private Sprite grassSprite;
+    private Sprite dirtSprite;
 
-    public Sprite grassSprite;
-    public Sprite dirtSprite;
-
+    // Copies of the internal/external maps
     public Map Map { get; protected set; }
     public Map ExternalMap { get; protected set; }
 
     public int ExternalModifier = 10;
     public int startx = 0;
+
+    // List to holds all the items on the map.
     private List<InteractiveItem> items;
     private List<InteractiveItem> engines;
 

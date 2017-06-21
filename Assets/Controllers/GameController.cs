@@ -47,10 +47,6 @@ public class GameController : MonoBehaviour {
         if (!game_over) {
             _TimeToLaunch -= Time.deltaTime;
 
-            var minutes = _TimeToLaunch / 60; //Divide the guiTime by sixty to get the minutes.
-            var seconds = _TimeToLaunch % 60;//Use the euclidean division for the seconds.
-            var fraction = (_TimeToLaunch * 100) % 100;
-
             if (_TimeToLaunch <= 0) {
                 _TimeToLaunch = 0;
                 game_won = true;
